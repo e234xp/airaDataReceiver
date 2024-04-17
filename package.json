@@ -34,13 +34,14 @@
   },
   "scripts": {
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest",
-    "dev": "node src/main fileroot=/home/aira/test-file-root localhost=127.0.0.1:8588",
+    "dev": "pm2 start --watch",
     "build": "webpack --config ./webpack.config.js && ./buildexe.sh",
     "deploy": "sh scripts/deploy.sh",
     "MUST_MANUAL": "",
     "insall nexe": "npm i nexe -g",
     "build1": "rm ./dist/mainService.js && webpack --config ./webpack.config.js",
-    "nexe1": "nexe ./mainService.js --target linux-x64-12.16.2 -o ./mainService"
+    "nexe1": "nexe ./mainService.js --target linux-x64-12.16.2 -o ./mainService",
+    "format": "npx prettier . --write"
   },
   "repository": {
     "type": "git",
