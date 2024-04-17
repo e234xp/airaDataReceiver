@@ -1,24 +1,24 @@
-const { uuid: uuidv4 } = require('uuidv4');
+const { uuid: uuidv4 } = require("uuidv4");
 
 module.exports = () => {
-  function find({
-    collection, query, sliceShift, sliceLength,
-  }) {
-    global.spiderman.systemlog.writeInfo(`domain crud find ${collection}, ${JSON.stringify(query)}, ${sliceShift}, ${sliceLength}`);
+  function find({ collection, query, sliceShift, sliceLength }) {
+    global.spiderman.systemlog.writeInfo(
+      `domain crud find ${collection}, ${JSON.stringify(query)}, ${sliceShift}, ${sliceLength}`,
+    );
 
-    const allData = global.spiderman.db[collection]
-      .find(query);
+    const allData = global.spiderman.db[collection].find(query);
 
     const totalLength = allData.length;
 
-    const result = allData
-      .slice(sliceShift, sliceShift + sliceLength);
+    const result = allData.slice(sliceShift, sliceShift + sliceLength);
 
     return { totalLength, result };
   }
 
   function insertOne({ collection, data, uniqueKeys = null }) {
-    global.spiderman.systemlog.writeInfo(`domain crud insertOne ${collection}, ${JSON.stringify(data)}`);
+    global.spiderman.systemlog.writeInfo(
+      `domain crud insertOne ${collection}, ${JSON.stringify(data)}`,
+    );
 
     if (uniqueKeys) {
       const uniqueObject = uniqueKeys
@@ -28,12 +28,11 @@ module.exports = () => {
           return obj;
         }, {});
 
-      const doesExist = global.spiderman.db[collection]
-        .findOne(uniqueObject);
+      const doesExist = global.spiderman.db[collection].findOne(uniqueObject);
 
       if (doesExist) {
-        global.spiderman.systemlog.writeError('duplicate data found');
-        throw Error('duplicate data found');
+        global.spiderman.systemlog.writeError("duplicate data found");
+        throw Error("duplicate data found");
       }
     }
 
@@ -52,7 +51,9 @@ module.exports = () => {
   }
 
   function insertMany({ collection, data }) {
-    global.spiderman.systemlog.writeInfo(`domain crud insertMany ${collection}, ${data ? data[0] : ''}`);
+    global.spiderman.systemlog.writeInfo(
+      `domain crud insertMany ${collection}, ${data ? data[0] : ""}`,
+    );
 
     const now = Date.now();
 
@@ -66,10 +67,10 @@ module.exports = () => {
     global.spiderman.db[collection].insertMany(data);
   }
 
-  function modify({
-    collection, uuid, data, uniqueKeys = null,
-  }) {
-    global.spiderman.systemlog.writeInfo(`domain crud modify ${collection}, ${uuid}, ${JSON.stringify(data)}`);
+  function modify({ collection, uuid, data, uniqueKeys = null }) {
+    global.spiderman.systemlog.writeInfo(
+      `domain crud modify ${collection}, ${uuid}, ${JSON.stringify(data)}`,
+    );
 
     if (uniqueKeys) {
       const uniqueObject = uniqueKeys
@@ -79,12 +80,14 @@ module.exports = () => {
           return obj;
         }, {});
 
-      const doesExist = global.spiderman.db[collection]
-        .findOne({ ...uniqueObject, uuid: { $ne: uuid } });
+      const doesExist = global.spiderman.db[collection].findOne({
+        ...uniqueObject,
+        uuid: { $ne: uuid },
+      });
 
       if (doesExist) {
-        global.spiderman.systemlog.writeError('duplicate data found');
-        throw Error('duplicate data found');
+        global.spiderman.systemlog.writeError("duplicate data found");
+        throw Error("duplicate data found");
       }
     }
 
@@ -98,7 +101,9 @@ module.exports = () => {
   }
 
   function remove({ collection, uuid }) {
-    global.spiderman.systemlog.writeInfo(`domain crud remove ${collection}, ${uuid}`);
+    global.spiderman.systemlog.writeInfo(
+      `domain crud remove ${collection}, ${uuid}`,
+    );
 
     global.spiderman.db[collection].deleteMany({ uuid: { $in: uuid } });
   }
@@ -115,18 +120,17 @@ module.exports = () => {
     const newItems = items.map((item) => {
       const result = global.spiderman._.get(item, field);
       if (Array.isArray(result)) {
-        const newResult = result
-          .filter((r) => {
-            if (typeof r === 'string') {
-              return !uuids.includes(r);
-            }
-            if (typeof r === 'object' && r !== null && 'uuid' in r) {
-              return !uuids.includes(r.uuid);
-            }
-            return false;
-          });
+        const newResult = result.filter((r) => {
+          if (typeof r === "string") {
+            return !uuids.includes(r);
+          }
+          if (typeof r === "object" && r !== null && "uuid" in r) {
+            return !uuids.includes(r.uuid);
+          }
+          return false;
+        });
         global.spiderman._.set(item, field, newResult);
-      } else if (typeof result === 'string') {
+      } else if (typeof result === "string") {
         global.spiderman._.set(item, field, null);
       }
       return item;

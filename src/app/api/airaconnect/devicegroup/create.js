@@ -1,22 +1,22 @@
 const fieldChecks = [
   {
-    fieldName: 'name',
-    fieldType: 'string',
+    fieldName: "name",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'list',
-    fieldType: 'array',
+    fieldName: "list",
+    fieldType: "array",
     required: true,
   },
   {
-    fieldName: 'created',
-    fieldType: 'number',
+    fieldName: "created",
+    fieldType: "number",
     required: false,
   },
   {
-    fieldName: 'remark',
-    fieldType: 'string',
+    fieldName: "remark",
+    fieldType: "string",
     required: false,
   },
 ];
@@ -30,7 +30,7 @@ module.exports = async (data) => {
   });
 
   // optional paramters set default value
-  if (!data.remark) data.remark = '';
+  if (!data.remark) data.remark = "";
 
   // if (data.typeId.length === 0) {
   //   global.spiderman.systemlog.writeError('Name cannot be empty.');
@@ -42,6 +42,6 @@ module.exports = async (data) => {
   global.spiderman.systemlog.writeInfo(`devicegroup create ${data.name}`);
 
   return {
-    message: 'ok',
+    message: "ok",
   };
 };

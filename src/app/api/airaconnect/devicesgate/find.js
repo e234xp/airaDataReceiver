@@ -1,35 +1,40 @@
 const fieldChecks = [
   {
-    fieldName: 'uuid',
-    fieldType: 'array',
+    fieldName: "uuid",
+    fieldType: "array",
     required: false,
   },
   {
-    fieldName: 'deviceId',
-    fieldType: 'array',
+    fieldName: "deviceId",
+    fieldType: "array",
     required: false,
   },
 ];
 
 module.exports = async (data) => {
-  global.spiderman.systemlog.writeInfo(`devicesgate find ${data.uuid} ${data.deviceId}`);
+  global.spiderman.systemlog.writeInfo(
+    `devicesgate find ${data.uuid} ${data.deviceId}`,
+  );
 
   data = global.spiderman.validate.data({
     data,
     fieldChecks,
   });
 
-  const { total_length, slice_shift, slice_length, list } = await global.domain.devicesgate.find(data);
+  const { total_length, slice_shift, slice_length, list } =
+    await global.domain.devicesgate.find(data);
 
   const ret = {
-    message: 'ok',
+    message: "ok",
     total_length,
     slice_shift,
     slice_length,
     list,
   };
 
-  global.spiderman.systemlog.writeInfo(`devicesgate find total_length ${total_length}, slice_shift ${slice_shift}, slice_length ${slice_length}, list ${list.length}`);
+  global.spiderman.systemlog.writeInfo(
+    `devicesgate find total_length ${total_length}, slice_shift ${slice_shift}, slice_length ${slice_length}, list ${list.length}`,
+  );
 
   return ret;
 };

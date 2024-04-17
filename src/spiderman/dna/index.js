@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const DATA_FOLDER = `${global.params.dataPath}`;
 const DB_FOLDER = `${global.params.dataPath}/db`;
@@ -14,68 +14,68 @@ module.exports = {
   db: {
     collections: [
       {
-        name: 'serverprofile',
-        type: 'file',
+        name: "serverprofile",
+        type: "file",
         cache: { isOpen: true },
         workingFolder: DB_FOLDER,
       },
       {
-        name: 'account',
-        type: 'file',
+        name: "account",
+        type: "file",
         cache: { isOpen: true, maxBytes: 10 * 1024 * 1024 },
         workingFolder: DB_FOLDER,
       },
       {
-        name: 'devicetype',
-        type: 'file',
+        name: "devicetype",
+        type: "file",
         cache: { isOpen: true, maxBytes: 10 * 1024 * 1024 },
         workingFolder: DB_FOLDER,
       },
       {
-        name: 'devicegroup',
-        type: 'file',
+        name: "devicegroup",
+        type: "file",
         cache: { isOpen: true, maxBytes: 10 * 1024 * 1024 },
         workingFolder: DB_FOLDER,
       },
       {
-        name: 'devicesenv',
-        type: 'file',
+        name: "devicesenv",
+        type: "file",
         cache: { isOpen: true, maxBytes: 10 * 1024 * 1024 },
         workingFolder: DB_FOLDER,
       },
       {
-        name: 'devicesmac',
-        type: 'file',
+        name: "devicesmac",
+        type: "file",
         cache: { isOpen: true, maxBytes: 10 * 1024 * 1024 },
         workingFolder: DB_FOLDER,
       },
       {
-        name: 'devicesair',
-        type: 'file',
+        name: "devicesair",
+        type: "file",
         cache: { isOpen: true, maxBytes: 10 * 1024 * 1024 },
         workingFolder: DB_FOLDER,
       },
       {
-        name: 'devicesele',
-        type: 'file',
+        name: "devicesele",
+        type: "file",
         cache: { isOpen: true, maxBytes: 10 * 1024 * 1024 },
         workingFolder: DB_FOLDER,
       },
       {
-        name: 'devicesgate',
-        type: 'file',
+        name: "devicesgate",
+        type: "file",
         cache: { isOpen: true, maxBytes: 10 * 1024 * 1024 },
         workingFolder: DB_FOLDER,
       },
       {
-        name: 'devicescomm',
-        type: 'file',
+        name: "devicescomm",
+        type: "file",
         cache: { isOpen: true, maxBytes: 10 * 1024 * 1024 },
         workingFolder: DB_FOLDER,
       },
       {
-        name: 'map',
-        type: 'file',
+        name: "map",
+        type: "file",
         cache: { isOpen: true, maxBytes: 10 * 1024 * 1024 },
         workingFolder: DB_FOLDER,
       },
@@ -86,20 +86,20 @@ module.exports = {
       //   workingFolder: DB_FOLDER,
       // },
       {
-        name: 'serversettings',
-        type: 'file',
+        name: "serversettings",
+        type: "file",
         cache: { isOpen: true },
         workingFolder: DB_FOLDER,
       },
       {
-        name: 'systemlog',
-        type: 'record',
+        name: "systemlog",
+        type: "record",
         cache: { isOpen: true, maxBytes: 20 * 1024 * 1024 },
         workingFolder: DATA_FOLDER,
       },
       {
-        name: 'eventhandle',
-        type: 'file',
+        name: "eventhandle",
+        type: "file",
         cache: { isOpen: true, maxBytes: 20 * 1024 * 1024 },
         workingFolder: DB_FOLDER,
       },

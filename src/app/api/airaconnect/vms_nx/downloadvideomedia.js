@@ -1,65 +1,76 @@
 const fieldChecks = [
   {
-    fieldName: 'host',
-    fieldType: 'string',
+    fieldName: "host",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'port',
-    fieldType: 'number',
+    fieldName: "port",
+    fieldType: "number",
     required: false,
   },
   {
-    fieldName: 'username',
-    fieldType: 'string',
+    fieldName: "username",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'password',
-    fieldType: 'string',
+    fieldName: "password",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'authorization',
-    fieldType: 'string',
+    fieldName: "authorization",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'camera_id',
-    fieldType: 'string',
+    fieldName: "camera_id",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'start_time',
-    fieldType: 'number',
+    fieldName: "start_time",
+    fieldType: "number",
     required: true,
   },
   {
-    fieldName: 'end_time',
-    fieldType: 'number',
+    fieldName: "end_time",
+    fieldType: "number",
     required: true,
   },
   {
-    fieldName: 'file_name',
-    fieldType: 'string',
+    fieldName: "file_name",
+    fieldType: "string",
     required: false,
   },
 ];
 
 module.exports = async (data, token, res) => {
-  global.spiderman.systemlog.writeInfo(`vms_nx viewsnapshot ${JSON.stringify(data)}`);
+  global.spiderman.systemlog.writeInfo(
+    `vms_nx viewsnapshot ${JSON.stringify(data)}`,
+  );
 
   data = global.spiderman.validate.data({
     data,
     fieldChecks,
   });
 
-  if (!data.host)
-    data = { ...data, ...global.params.vms };
+  if (!data.host) data = { ...data, ...global.params.vms };
 
   const list = await global.domain.workerNx.viewmedia(
-    data.host, data.port, data.username, data.password, data.authorization,
-    { cameraId: data.camera_id, startTime: data.start_time, endTime: data.end_time, fileName: data.file_name, res },
+    data.host,
+    data.port,
+    data.username,
+    data.password,
+    data.authorization,
+    {
+      cameraId: data.camera_id,
+      startTime: data.start_time,
+      endTime: data.end_time,
+      fileName: data.file_name,
+      res,
+    },
   );
 
   // const ret = {

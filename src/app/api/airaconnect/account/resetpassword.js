@@ -1,23 +1,25 @@
 const fieldChecks = [
   {
-    fieldName: 'username',
-    fieldType: 'string',
+    fieldName: "username",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'password',
-    fieldType: 'string',
+    fieldName: "password",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'license',
-    fieldType: 'string',
+    fieldName: "license",
+    fieldType: "string",
     required: true,
   },
 ];
 
 module.exports = async (data) => {
-  global.spiderman.systemlog.writeInfo(`account resetpassword ${JSON.stringify(data)}`);
+  global.spiderman.systemlog.writeInfo(
+    `account resetpassword ${JSON.stringify(data)}`,
+  );
 
   // paramters checker
   data = global.spiderman.validate.data({
@@ -25,23 +27,25 @@ module.exports = async (data) => {
     fieldChecks,
   });
 
-  const accounts = global.spiderman.db.account.find({ username: data.username });
+  const accounts = global.spiderman.db.account.find({
+    username: data.username,
+  });
 
   if (accounts.length <= 0) {
-    global.spiderman.systemlog.writeError('Item not found.');
-    throw Error('Item not found.');
+    global.spiderman.systemlog.writeError("Item not found.");
+    throw Error("Item not found.");
   } else {
     let response = null;
 
     try {
       response = await global.spiderman.request.make({
         url: `http://${global.params.localhost}/system/findlicense`,
-        method: 'POST',
+        method: "POST",
         pool: { maxSockets: 10 },
         time: true,
         timeout: 30000,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         json: data,
       });
@@ -64,28 +68,35 @@ module.exports = async (data) => {
       //   },
       // ];
     } catch (e) {
-      global.spiderman.systemlog.writeError(`fatch license error. ${e.message}`);
+      global.spiderman.systemlog.writeError(
+        `fatch license error. ${e.message}`,
+      );
       throw Error(`fatch license error. ${e.message}`);
     }
 
     if (response) {
-      const licenses = response.license.filter((l) => l.license_key === data.license);
+      const licenses = response.license.filter(
+        (l) => l.license_key === data.license,
+      );
       if (licenses.length <= 0) {
-        global.spiderman.systemlog.writeError('license not found.');
-        throw Error('license not found.');
+        global.spiderman.systemlog.writeError("license not found.");
+        throw Error("license not found.");
       } else {
         accounts[0].last_modify_date = Date.now();
         accounts[0].password = data.password;
 
-        global.spiderman.db.account.updateOne({ username: data.username }, accounts[0]);
+        global.spiderman.db.account.updateOne(
+          { username: data.username },
+          accounts[0],
+        );
 
         return {
-          message: 'ok',
+          message: "ok",
         };
       }
     } else {
-      global.spiderman.systemlog.writeError('license not found.');
-      throw Error('license not found.');
+      global.spiderman.systemlog.writeError("license not found.");
+      throw Error("license not found.");
     }
   }
 };

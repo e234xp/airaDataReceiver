@@ -1,18 +1,18 @@
 // 指定要列出檔案的資料夾路徑
 module.exports = () => {
   const items = [
-    'serverprofile.js',
-    'account.js',
-    'devicetype.js',
-    'devicegroup.js',
-    'devicesenv.js',
-    'devicesmac.js',
-    'devicesair.js',
-    'devicesele.js',
-    'devicesgate.js',
-    'devicescomm.js',
-    'eventhandle.js',
-    'map.js'
+    "serverprofile.js",
+    "account.js",
+    "devicetype.js",
+    "devicegroup.js",
+    "devicesenv.js",
+    "devicesmac.js",
+    "devicesair.js",
+    "devicesele.js",
+    "devicesgate.js",
+    "devicescomm.js",
+    "eventhandle.js",
+    "map.js",
     // 'systemlog.js',
   ];
 
@@ -20,7 +20,7 @@ module.exports = () => {
     const tmp = {};
 
     items.forEach((item) => {
-      const name = item.split('.')[0];
+      const name = item.split(".")[0];
       tmp[name] = require(`./${item}`);
     });
 

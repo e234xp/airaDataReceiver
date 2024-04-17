@@ -1,37 +1,39 @@
 module.exports = () => {
   const { db } = global.spiderman;
 
-  async function find({
-    uuid, typeId, sliceShift, sliceLength
-  }) {
+  async function find({ uuid, typeId, sliceShift, sliceLength }) {
     if (!Array.isArray(uuid)) uuid = [];
     if (!Array.isArray(typeId)) typeId = [];
     if (sliceShift == undefined) sliceShift = 0;
     if (sliceLength == undefined) sliceLength = Number.MAX_SAFE_INTEGER;
 
-    global.spiderman.systemlog.writeInfo(`domain devicetype find ${uuid} ${typeId}`);
+    global.spiderman.systemlog.writeInfo(
+      `domain devicetype find ${uuid} ${typeId}`,
+    );
 
-    const { totalLength, result } = await global.domain.crud
-      .find({
-        collection: 'devicetype',
-        query: { uuid: (uuid.length <= 0 ? {} : { $in: uuid }), typeId: (typeId.length <= 0 ? {} : { $in: typeId }) },
-        sliceShift,
-        sliceLength,
-      });
+    const { totalLength, result } = await global.domain.crud.find({
+      collection: "devicetype",
+      query: {
+        uuid: uuid.length <= 0 ? {} : { $in: uuid },
+        typeId: typeId.length <= 0 ? {} : { $in: typeId },
+      },
+      sliceShift,
+      sliceLength,
+    });
 
     return {
       total_length: totalLength,
-      list: result
+      list: result,
     };
   }
 
-  async function create({
-    uuid, typeId, name, remark,
-  }) {
-    global.spiderman.systemlog.writeInfo(`domain devicetype create ${typeId} ${name}`);
+  async function create({ uuid, typeId, name, remark }) {
+    global.spiderman.systemlog.writeInfo(
+      `domain devicetype create ${typeId} ${name}`,
+    );
 
-    const fixedUuids = ['1', '2', '3', '4'];
-    if (fixedUuids.includes(uuid)) throw Error('The item can not be change.');
+    const fixedUuids = ["1", "2", "3", "4"];
+    if (fixedUuids.includes(uuid)) throw Error("The item can not be change.");
 
     let doesExist = false;
     doesExist = !!db.devicetype.findOne({ typeId });
@@ -41,19 +43,16 @@ module.exports = () => {
     if (doesExist) throw Error(`The item <${name}> has already existed.`);
 
     await global.domain.crud.insertOne({
-      collection: 'devicetype',
+      collection: "devicetype",
       data: { typeId, name, remark },
     });
   }
 
-  async function modify({
-    uuid,
-    typeId, name, remark,
-  }) {
+  async function modify({ uuid, typeId, name, remark }) {
     global.spiderman.systemlog.writeInfo(`domain devicetype modify ${uuid}`);
 
-    const fixedUuids = ['1', '2', '3', '4'];
-    if (fixedUuids.includes(uuid)) throw Error('The item can not be change.');
+    const fixedUuids = ["1", "2", "3", "4"];
+    if (fixedUuids.includes(uuid)) throw Error("The item can not be change.");
 
     let doesExist = false;
     doesExist = !!db.devicetype.findOne({ typeId, uuid: { $ne: uuid } });
@@ -63,15 +62,13 @@ module.exports = () => {
     if (doesExist) throw Error(`The item <${name}> has already existed.`);
 
     await global.domain.crud.modify({
-      collection: 'devicetype',
+      collection: "devicetype",
       uuid,
       data: { typeId, name, remark },
     });
   }
 
-  async function remove({
-    uuid, typeId
-  }) {
+  async function remove({ uuid, typeId }) {
     if (!Array.isArray(uuid)) uuid = [];
 
     global.spiderman.systemlog.writeInfo(`domain devicetype remove ${uuid}`);
@@ -79,9 +76,7 @@ module.exports = () => {
     // const fixedUuids = ['0', '1'];
     // uuid = uuid.filter((item) => !fixedUuids.includes(item));
 
-    db.devicetype.deleteMany(
-      { uuid: (uuid.length <= 0 ? {} : { $in: uuid }) }
-    );
+    db.devicetype.deleteMany({ uuid: uuid.length <= 0 ? {} : { $in: uuid } });
   }
 
   return {

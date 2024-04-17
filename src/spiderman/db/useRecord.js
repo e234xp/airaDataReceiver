@@ -1,5 +1,5 @@
-const fs = require('fs');
-const jsonfile = require('jsonfile');
+const fs = require("fs");
+const jsonfile = require("jsonfile");
 // const _ = require('lodash');
 
 module.exports = ({
@@ -56,8 +56,9 @@ module.exports = ({
       return null;
     }
 
-    const entry = Array.from(cacheData.entries())
-      .find(([key]) => key.startsWith(id));
+    const entry = Array.from(cacheData.entries()).find(([key]) =>
+      key.startsWith(id),
+    );
     if (!entry) return null;
     const [key, value] = entry;
 
@@ -82,7 +83,7 @@ module.exports = ({
     let oldestTimestamp = Infinity;
 
     cacheSizes.forEach((value, key) => {
-      const timestamp = Number(key.split(':')[1]);
+      const timestamp = Number(key.split(":")[1]);
       if (timestamp < oldestTimestamp) {
         oldestTimestamp = timestamp;
         oldestKey = key;
@@ -92,26 +93,25 @@ module.exports = ({
     return oldestKey;
   }
 
-  function find({
-    startTime, endTime, query = {},
-  }) {
+  function find({ startTime, endTime, query = {} }) {
     const dir = fs.readdirSync(FOLIDER_PATH);
 
     const filterdFiles = dir.filter((file) => {
-      const [fileName, type] = file.split('.');
-      if (type !== 'db') return false;
+      const [fileName, type] = file.split(".");
+      if (type !== "db") return false;
 
-      const [, fileStartTime, fileEndTime] = fileName.split('_');
-      const v = (startTime <= fileStartTime && endTime >= fileEndTime)
-        || (startTime >= fileStartTime && startTime <= fileEndTime)
-        || (endTime >= fileStartTime && endTime <= fileEndTime);
+      const [, fileStartTime, fileEndTime] = fileName.split("_");
+      const v =
+        (startTime <= fileStartTime && endTime >= fileEndTime) ||
+        (startTime >= fileStartTime && startTime <= fileEndTime) ||
+        (endTime >= fileStartTime && endTime <= fileEndTime);
 
       return v;
     });
 
     const allRecordsInFiles = filterdFiles.flatMap((file) => {
       const filePath = `${FOLIDER_PATH}/${file}`;
-      const [fileName] = file.split('.');
+      const [fileName] = file.split(".");
 
       // const cache = getCache(fileName);
       // if (cache) {
@@ -123,8 +123,8 @@ module.exports = ({
       // }
 
       const item = (() => {
-        let fileString = fs.readFileSync(filePath).toString('utf8');
-        if (fileString[0] === ',') {
+        let fileString = fs.readFileSync(filePath).toString("utf8");
+        if (fileString[0] === ",") {
           fileString = fileString.substring(1);
         }
 
@@ -151,7 +151,7 @@ module.exports = ({
 
       const isCurrentFile = (() => {
         const now = Date.now();
-        const [, fileStartTime, fileEndTime] = fileName.split('_');
+        const [, fileStartTime, fileEndTime] = fileName.split("_");
 
         return now >= fileStartTime && now <= fileEndTime;
       })();
@@ -162,15 +162,17 @@ module.exports = ({
       return item;
     });
 
-    const recordsInTimeRanges = allRecordsInFiles
-      .filter(({ timestamp }) => startTime <= timestamp && endTime >= timestamp);
+    const recordsInTimeRanges = allRecordsInFiles.filter(
+      ({ timestamp }) => startTime <= timestamp && endTime >= timestamp,
+    );
 
-    const queriedRecords = Object.keys(query).length > 0
-      ? global.spiderman.query({
-        data: recordsInTimeRanges,
-        queryObject: query,
-      }).data
-      : recordsInTimeRanges;
+    const queriedRecords =
+      Object.keys(query).length > 0
+        ? global.spiderman.query({
+            data: recordsInTimeRanges,
+            queryObject: query,
+          }).data
+        : recordsInTimeRanges;
 
     return queriedRecords;
   }
@@ -180,31 +182,31 @@ module.exports = ({
     const dir = fs.readdirSync(FOLIDER_PATH);
 
     const filterdFiles = dir.filter((file) => {
-      const [fileName, type] = file.split('.');
-      if (type !== 'db') return false;
+      const [fileName, type] = file.split(".");
+      if (type !== "db") return false;
 
-      const [, fileStartTime, fileEndTime] = fileName.split('_');
-      const v = (startTime <= fileStartTime && endTime >= fileEndTime)
-        || (startTime >= fileStartTime && startTime <= fileEndTime)
-        || (endTime >= fileStartTime && endTime <= fileEndTime);
+      const [, fileStartTime, fileEndTime] = fileName.split("_");
+      const v =
+        (startTime <= fileStartTime && endTime >= fileEndTime) ||
+        (startTime >= fileStartTime && startTime <= fileEndTime) ||
+        (endTime >= fileStartTime && endTime <= fileEndTime);
 
       return v;
     });
 
     const allRecordsInFiles = filterdFiles.flatMap((file) => {
       const filePath = `${FOLIDER_PATH}/${file}`;
-      const [fileName] = file.split('.');
+      const [fileName] = file.split(".");
 
       const item = (() => {
-        let fileString = fs.readFileSync(filePath).toString('utf8');
-        if (fileString[0] === ',') {
+        let fileString = fs.readFileSync(filePath).toString("utf8");
+        if (fileString[0] === ",") {
           fileString = fileString.substring(1);
         }
 
         const fileArray = (() => {
           try {
-            const result = JSON
-              .parse(`[${fileString}]`);
+            const result = JSON.parse(`[${fileString}]`);
 
             return result;
           } catch (e) {
@@ -233,7 +235,11 @@ module.exports = ({
       }
     }
 
-    jsonfile.writeStringFileSync(`${FOLIDER_PATH}/${filterdFiles[0]}`, allRecordsInFiles, { spaces: 0 });
+    jsonfile.writeStringFileSync(
+      `${FOLIDER_PATH}/${filterdFiles[0]}`,
+      allRecordsInFiles,
+      { spaces: 0 },
+    );
 
     return record;
   }

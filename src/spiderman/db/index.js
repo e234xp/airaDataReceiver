@@ -1,16 +1,14 @@
-const useFile = require('./useFile');
-const useImage = require('./useImage');
-const useRecord = require('./useRecord');
+const useFile = require("./useFile");
+const useImage = require("./useImage");
+const useRecord = require("./useRecord");
 
 module.exports = ({ collections }) => {
   const db = {};
-  collections.forEach(({
-    workingFolder, name, type = 'file', cache = {},
-  }) => {
+  collections.forEach(({ workingFolder, name, type = "file", cache = {} }) => {
     const dbInstance = (() => {
       let instance;
       switch (type) {
-        case 'file':
+        case "file":
           instance = useFile({
             workingFolder,
             name,
@@ -18,7 +16,7 @@ module.exports = ({ collections }) => {
           });
           break;
 
-        case 'record':
+        case "record":
           instance = useRecord({
             workingFolder,
             name,
@@ -26,7 +24,7 @@ module.exports = ({ collections }) => {
           });
           break;
 
-        case 'image':
+        case "image":
           instance = useImage({
             workingFolder,
             name,

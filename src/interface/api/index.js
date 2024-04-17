@@ -1,4 +1,4 @@
-const perf = require('perf_hooks');
+const perf = require("perf_hooks");
 
 const cgiCounter = {
   number: 0,
@@ -6,15 +6,15 @@ const cgiCounter = {
 };
 
 module.exports = (route) => {
-  const myService = require('express')();
+  const myService = require("express")();
   const { publicCgi, router } = require(`.${route}`)();
 
-  myService.post('/:cgi', async (req, res) => {
+  myService.post("/:cgi", async (req, res) => {
     const startTime = perf.performance.now();
     const { cgi } = req.params;
     try {
       addCgiCounter(cgi);
-      if (!router[cgi]) throw Error('no such cgi');
+      if (!router[cgi]) throw Error("no such cgi");
       global.spiderman.systemlog.writeInfo(`${cgi} has been called.`);
       authorize({ req, publicCgi });
 
@@ -32,12 +32,12 @@ module.exports = (route) => {
     }
   });
 
-  myService.get('/:cgi', async (req, res) => {
+  myService.get("/:cgi", async (req, res) => {
     const startTime = perf.performance.now();
     const { cgi } = req.params;
     try {
       addCgiCounter(cgi);
-      if (!router[cgi]) throw Error('no such cgi');
+      if (!router[cgi]) throw Error("no such cgi");
       global.spiderman.systemlog.writeInfo(`${cgi} has been called.`);
       authorize({ req, publicCgi });
 
@@ -67,7 +67,9 @@ function addCgiCounter(cgi) {
 function checkIsCgiExceeded() {
   const { number, max } = cgiCounter;
   if (number + 1 > max) {
-    throw Error('Too Many Requests, server allows upto max 50 request concurrently.');
+    throw Error(
+      "Too Many Requests, server allows upto max 50 request concurrently.",
+    );
   }
 }
 
@@ -77,14 +79,14 @@ function minusCgiCounter(cgi) {
 }
 
 function getBody(req) {
-  if (req.is('multipart/form-data')) {
+  if (req.is("multipart/form-data")) {
     return {
       ...global.spiderman.parse.circularJson(req.body),
       ...req.files,
     };
   }
 
-  if (req.is('json')) {
+  if (req.is("json")) {
     return global.spiderman.parse.circularJson(req.body);
   }
 
@@ -92,16 +94,16 @@ function getBody(req) {
     return global.spiderman.parse.circularJson(req.query);
   }
 
-  throw Error('System: no such request type');
+  throw Error("System: no such request type");
 }
 
 function processResponse(jsonResponse, res) {
   if (jsonResponse) {
-    if (jsonResponse?.action === 'download') {
+    if (jsonResponse?.action === "download") {
       const { path, fileName } = jsonResponse;
       res.download(path, fileName, (err) => {
         if (!err) return;
-        res.status(404).json({ message: 'file not found' });
+        res.status(404).json({ message: "file not found" });
       });
     } else {
       res.status(200).json(jsonResponse);
@@ -123,10 +125,12 @@ function handleError(error, res, cgi) {
 }
 
 function determinErrorCode(error) {
-  return {
-    'Too Many Requests, server allows upto max 50 request concurrently.': 429,
-    Unauthorized: 401,
-  }[error.message] ?? 400;
+  return (
+    {
+      "Too Many Requests, server allows upto max 50 request concurrently.": 429,
+      Unauthorized: 401,
+    }[error.message] ?? 400
+  );
 }
 
 function authorize({ req, publicCgi = [] }) {
@@ -135,14 +139,21 @@ function authorize({ req, publicCgi = [] }) {
   const isPassed = (() => {
     if (publicCgi.includes(cgi)) return true;
 
-    const token = req.headers.token ?? req.query?.token
-      ?? req.headers.sessionId ?? req.query?.sessionId
-      ?? null;
+    const token =
+      req.headers.token ??
+      req.query?.token ??
+      req.headers.sessionId ??
+      req.query?.sessionId ??
+      null;
 
-    return token && (token === global.params.session.godSession || global.spiderman.token.decryptToAccountInTime(token));
+    return (
+      token &&
+      (token === global.params.session.godSession ||
+        global.spiderman.token.decryptToAccountInTime(token))
+    );
   })();
 
   if (!isPassed) {
-    throw Error('Unauthorized');
+    throw Error("Unauthorized");
   }
 }

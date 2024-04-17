@@ -1,27 +1,27 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
 module.exports = () => {
-    const sessionKey = 't/6a54idkrru4aej31zp4u.3vu04ej/n';
+  const sessionKey = "t/6a54idkrru4aej31zp4u.3vu04ej/n";
 
-    function genSaltSync() {
-        let salt = bcrypt.genSalt(10, function (err, salt) { });
-        return salt;
-    }
+  function genSaltSync() {
+    let salt = bcrypt.genSalt(10, function (err, salt) {});
+    return salt;
+  }
 
-    // function genSessionId() {
-    //     return bcrypt.hashSync(sessionKey, genSaltSync());
-    // }
+  // function genSessionId() {
+  //     return bcrypt.hashSync(sessionKey, genSaltSync());
+  // }
 
-    function encryptPassword(password) {
-        return bcrypt.hashSync(password, genSaltSync());
-    }
+  function encryptPassword(password) {
+    return bcrypt.hashSync(password, genSaltSync());
+  }
 
-    async function comparePassword(password, hashpassword) {
-        return await bcrypt.compare(password, hashpassword);
-    }
+  async function comparePassword(password, hashpassword) {
+    return await bcrypt.compare(password, hashpassword);
+  }
 
-    return {
-        encryptPassword,
-        comparePassword
-    };
+  return {
+    encryptPassword,
+    comparePassword,
   };
+};

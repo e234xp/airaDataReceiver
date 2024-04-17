@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 module.exports = ({ workingFolder, name }) => {
   const FOLIDER_PATH = `${workingFolder}/${name}`;
@@ -9,12 +9,10 @@ module.exports = ({ workingFolder, name }) => {
   function findOne(path) {
     const FILE_PATH = `${FOLIDER_PATH}/${path}`;
     try {
-      const image = fs
-        .readFileSync(FILE_PATH)
-        .toString('utf8');
+      const image = fs.readFileSync(FILE_PATH).toString("utf8");
       return image;
     } catch {
-      return '';
+      return "";
     }
   }
 

@@ -1,10 +1,18 @@
-const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require("mongodb").MongoClient;
 
 module.exports = () => {
   let client = null;
 
   async function connect({
-    url, host, port, user, pass, onConnect = () => { }, onData = () => { }, onClose = () => { }, onError = () => { },
+    url,
+    host,
+    port,
+    user,
+    pass,
+    onConnect = () => {},
+    onData = () => {},
+    onClose = () => {},
+    onError = () => {},
   }) {
     // console.log("mongo connect");
     // 建立  連線
@@ -17,7 +25,7 @@ module.exports = () => {
 
       maxPoolSize: 5,
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
     };
 
     if (user) {
@@ -43,24 +51,23 @@ module.exports = () => {
 
       client.connect((err, conn) => {
         if (err) {
-          console.log('mongodb onError');
+          console.log("mongodb onError");
           // console.log(err);
           onError(client, err);
         } else {
-          console.log('mongodb onConnect');
+          console.log("mongodb onConnect");
           onConnect(client);
         }
 
         // maintainConnection();
       });
 
-      client.on('serverClosed', () => {
-        console.log('mongodb onClose')
+      client.on("serverClosed", () => {
+        console.log("mongodb onClose");
         onClose(client);
       });
-    }
-    catch (ex) {
-      console.log('mongodb onError');
+    } catch (ex) {
+      console.log("mongodb onError");
       // console.log(ex);
 
       onError(client, ex);
@@ -70,6 +77,6 @@ module.exports = () => {
   }
 
   return {
-    connect
+    connect,
   };
 };

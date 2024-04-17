@@ -1,18 +1,20 @@
 const fieldChecks = [
   {
-    fieldName: 'uuid',
-    fieldType: 'array',
+    fieldName: "uuid",
+    fieldType: "array",
     required: false,
   },
   {
-    fieldName: 'typeId',
-    fieldType: 'array',
+    fieldName: "typeId",
+    fieldType: "array",
     required: false,
   },
 ];
 
 module.exports = async (data) => {
-  global.spiderman.systemlog.writeInfo(`devicetype find ${data.uuid} ${data.typeId}`);
+  global.spiderman.systemlog.writeInfo(
+    `devicetype find ${data.uuid} ${data.typeId}`,
+  );
 
   data = global.spiderman.validate.data({
     data,
@@ -22,11 +24,13 @@ module.exports = async (data) => {
   const { total_length, list } = await global.domain.devicetype.find(data);
 
   const ret = {
-    message: 'ok',
+    message: "ok",
     list,
   };
 
-  global.spiderman.systemlog.writeInfo(`group find ${data.uuid} ${data.typeId}`);
+  global.spiderman.systemlog.writeInfo(
+    `group find ${data.uuid} ${data.typeId}`,
+  );
 
   return ret;
 };

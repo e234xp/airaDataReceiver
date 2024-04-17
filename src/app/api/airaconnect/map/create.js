@@ -1,27 +1,27 @@
 const fieldChecks = [
   {
-    fieldName: 'name',
-    fieldType: 'string',
+    fieldName: "name",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'imageName',
-    fieldType: 'string',
+    fieldName: "imageName",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'mapFile',
-    fieldType: 'string',
+    fieldName: "mapFile",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'area',
-    fieldType: 'array',
+    fieldName: "area",
+    fieldType: "array",
     required: false,
   },
   {
-    fieldName: 'pin',
-    fieldType: 'array',
+    fieldName: "pin",
+    fieldType: "array",
     required: false,
   },
 ];
@@ -39,6 +39,6 @@ module.exports = async (data) => {
   global.spiderman.systemlog.writeInfo(`env map create ${data.name}`);
 
   return {
-    message: 'ok',
+    message: "ok",
   };
 };

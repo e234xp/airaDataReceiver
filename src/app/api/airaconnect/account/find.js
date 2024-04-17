@@ -1,5 +1,4 @@
-const fieldChecks = [
-];
+const fieldChecks = [];
 
 module.exports = (data, token) => {
   global.spiderman.systemlog.writeInfo(`account find ${JSON.stringify(data)}`);
@@ -17,13 +16,13 @@ module.exports = (data, token) => {
     const accountsTmp = global.spiderman.db.account.find();
     const tokenUser = global.spiderman.token.decryptToAccount(token);
 
-    return tokenUser.x === 'Admin'
+    return tokenUser.x === "Admin"
       ? accountsTmp
       : accountsTmp.filter((d) => tokenUser.u === d.username);
   })();
 
   const ret = {
-    message: 'ok',
+    message: "ok",
     account_list: accounts,
   };
 

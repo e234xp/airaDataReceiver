@@ -5,9 +5,16 @@ module.exports = () => {
   // const { workerMongo } = global.domain;
 
   async function findDeviceRowMeta({
-    collection, start_time, end_time, deviceId, slice_shift, slice_length
+    collection,
+    start_time,
+    end_time,
+    deviceId,
+    slice_shift,
+    slice_length,
   }) {
-    global.spiderman.systemlog.writeInfo(`domain report findDeviceRowMeta ${start_time} ${end_time} ${deviceId}`);
+    global.spiderman.systemlog.writeInfo(
+      `domain report findDeviceRowMeta ${start_time} ${end_time} ${deviceId}`,
+    );
 
     let query = { timestamp: { $gte: start_time, $lt: end_time } };
 
@@ -15,34 +22,45 @@ module.exports = () => {
       query.deviceId = { $in: deviceId };
     }
 
-    const { totalLength, result } =
-      await new Promise((resolve, reject) => {
-        global.domain.workerMongo.find(collection, query, { timestamp: -1 }, { slice_shift, slice_length }, (err, records) => {
+    const { totalLength, result } = await new Promise((resolve, reject) => {
+      global.domain.workerMongo.find(
+        collection,
+        query,
+        { timestamp: -1 },
+        { slice_shift, slice_length },
+        (err, records) => {
           if (err) {
             resolve({
               totalLength: 0,
-              result: []
-            })
+              result: [],
+            });
             throw Error(err);
           } else {
             resolve({
               totalLength: records.total_length,
-              result: records.data
-            })
+              result: records.data,
+            });
           }
-        });
-      });
+        },
+      );
+    });
 
     return {
       total_length: totalLength,
-      list: result
+      list: result,
     };
   }
 
   async function findDeviceRowEventStat({
-    collection, dateCode, deviceId, slice_shift, slice_length
+    collection,
+    dateCode,
+    deviceId,
+    slice_shift,
+    slice_length,
   }) {
-    global.spiderman.systemlog.writeInfo(`domain report findDeviceRowEventStat ${dateCode} ${deviceId}`);
+    global.spiderman.systemlog.writeInfo(
+      `domain report findDeviceRowEventStat ${dateCode} ${deviceId}`,
+    );
 
     let query = { dateCode: { $in: dateCode } };
 
@@ -50,27 +68,32 @@ module.exports = () => {
       query.deviceId = { $in: deviceId };
     }
 
-    const { totalLength, result } =
-      await new Promise((resolve, reject) => {
-        global.domain.workerMongo.find(collection, query, { dateCode: 1, deviceId: 1 }, { slice_shift, slice_length }, (err, records) => {
+    const { totalLength, result } = await new Promise((resolve, reject) => {
+      global.domain.workerMongo.find(
+        collection,
+        query,
+        { dateCode: 1, deviceId: 1 },
+        { slice_shift, slice_length },
+        (err, records) => {
           if (err) {
             resolve({
               totalLength: 0,
-              result: []
-            })
+              result: [],
+            });
             throw Error(err);
           } else {
             resolve({
               totalLength: records.total_length,
-              result: records.data
-            })
+              result: records.data,
+            });
           }
-        });
-      });
+        },
+      );
+    });
 
     return {
       total_length: totalLength,
-      list: result
+      list: result,
     };
   }
 

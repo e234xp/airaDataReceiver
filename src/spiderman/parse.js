@@ -1,7 +1,7 @@
 const getCircularReplacer = () => {
   const seen = new WeakSet();
   return (key, value) => {
-    if (typeof value === 'object' && value !== null) {
+    if (typeof value === "object" && value !== null) {
       if (seen.has(value)) {
         return undefined;
       }
@@ -18,20 +18,20 @@ module.exports = () => {
     try {
       reqData = JSON.parse(circularReplacedata);
     } catch (e) {
-      console.log('circularJson', e);
+      console.log("circularJson", e);
     }
     return reqData;
   }
 
   function json(data) {
     let reqData = null;
-    if (typeof data === 'string') {
+    if (typeof data === "string") {
       try {
         reqData = JSON.parse(data);
       } catch (e) {
-        console.log('json', e);
+        console.log("json", e);
       }
-    } else if (typeof data === 'object') {
+    } else if (typeof data === "object") {
       reqData = data;
     }
 

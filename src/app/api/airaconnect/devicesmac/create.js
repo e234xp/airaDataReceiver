@@ -1,68 +1,70 @@
 const fieldChecks = [
   {
-    fieldName: 'serial',
-    fieldType: 'number',
+    fieldName: "serial",
+    fieldType: "number",
     required: true,
   },
   {
-    fieldName: 'gateId',
-    fieldType: 'string',
+    fieldName: "gateId",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'deviceId',
-    fieldType: 'string',
+    fieldName: "deviceId",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'name',
-    fieldType: 'string',
+    fieldName: "name",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'model',
-    fieldType: 'string',
+    fieldName: "model",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'typeId',
-    fieldType: 'string',
+    fieldName: "typeId",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'protocol',
-    fieldType: 'string',
+    fieldName: "protocol",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'group',
-    fieldType: 'string',
+    fieldName: "group",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'areaId',
-    fieldType: 'string',
+    fieldName: "areaId",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'locationId',
-    fieldType: 'string',
+    fieldName: "locationId",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'camera',
-    fieldType: 'array',
+    fieldName: "camera",
+    fieldType: "array",
     required: false,
   },
   {
-    fieldName: 'signal',
-    fieldType: 'array',
+    fieldName: "signal",
+    fieldType: "array",
     required: false,
   },
 ];
 
 module.exports = async (data) => {
-  global.spiderman.systemlog.writeInfo(`env devicesmac create ${data.deviceId}`);
+  global.spiderman.systemlog.writeInfo(
+    `env devicesmac create ${data.deviceId}`,
+  );
 
   data = global.spiderman.validate.data({
     data,
@@ -71,9 +73,11 @@ module.exports = async (data) => {
 
   await global.domain.devicesmac.create(data);
 
-  global.spiderman.systemlog.writeInfo(`env devicesmac create ${data.deviceId}`);
+  global.spiderman.systemlog.writeInfo(
+    `env devicesmac create ${data.deviceId}`,
+  );
 
   return {
-    message: 'ok',
+    message: "ok",
   };
 };

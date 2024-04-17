@@ -1,7 +1,7 @@
 const fieldChecks = [
   {
-    fieldName: 'uuid',
-    fieldType: 'array',
+    fieldName: "uuid",
+    fieldType: "array",
     required: false,
   },
   // {
@@ -19,10 +19,11 @@ module.exports = async (data) => {
     fieldChecks,
   });
 
-  const { total_length, list: data_list } = await global.domain.devicegroup.find(data);
+  const { total_length, list: data_list } =
+    await global.domain.devicegroup.find(data);
 
   const ret = {
-    message: 'ok',
+    message: "ok",
     data_list,
   };
 

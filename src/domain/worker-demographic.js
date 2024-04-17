@@ -5,18 +5,28 @@ module.exports = () => {
     if (global.params.server.dataEnable) {
       const server = global.spiderman.udp.create();
 
-      server.on('listening', () => {
+      server.on("listening", () => {
         const address = server.address();
-        global.spiderman.systemlog.writeInfo(`domain worker-demographic listening ${address.address}:${address.port}`);
+        global.spiderman.systemlog.writeInfo(
+          `domain worker-demographic listening ${address.address}:${address.port}`,
+        );
 
-        console.log(`接收伺服器正在監聽 worker-demographic ${address.address}:${address.port}`);
+        console.log(
+          `接收伺服器正在監聽 worker-demographic ${address.address}:${address.port}`,
+        );
       });
 
-      server.on('message', (message, rinfo) => {
+      server.on("message", (message, rinfo) => {
         try {
-          console.log('==============================================================');
-          console.log(`message from demographic ${rinfo.address} ${rinfo.port}`);
-          global.spiderman.systemlog.writeInfo(`domain worker-demographic message ${rinfo.address} ${rinfo.port}`);
+          console.log(
+            "==============================================================",
+          );
+          console.log(
+            `message from demographic ${rinfo.address} ${rinfo.port}`,
+          );
+          global.spiderman.systemlog.writeInfo(
+            `domain worker-demographic message ${rinfo.address} ${rinfo.port}`,
+          );
 
           var pos = 0;
           // var totalLen = Number(message.readUInt32LE(pos));
@@ -58,7 +68,7 @@ module.exports = () => {
           pos += 4;
 
           //console.log( "infoLen ", infoLen );
-          var info = message.toString('utf8', pos, pos + infoLen);
+          var info = message.toString("utf8", pos, pos + infoLen);
           pos += infoLen;
           message = JSON.parse(info);
 
@@ -74,14 +84,17 @@ module.exports = () => {
           let timestamp = new Date().valueOf();
 
           global.domain.workerMongo.insertOne(
-            'DeviceRow',
-            { topic: rinfo.address, time: timestamp, datetime: new Date(timestamp).toLocaleString(), message: message },
+            "DeviceRow",
+            {
+              topic: rinfo.address,
+              time: timestamp,
+              datetime: new Date(timestamp).toLocaleString(),
+              message: message,
+            },
             (err, data) => {
               if (data) {
                 data.forEach((record) => {
-                  console.log('demographic workder onData', record);
-
-
+                  console.log("demographic workder onData", record);
 
                   // global.spiderman.socket.broadcastMessage({
                   //   socketServer: global.spiderman.server.wsDeviceStatus,
@@ -89,10 +102,10 @@ module.exports = () => {
                   // });
                 });
               }
-            }
-          )
+            },
+          );
         } catch (e) {
-          console.log('domain worker-demographic message', e);
+          console.log("domain worker-demographic message", e);
         }
       });
 

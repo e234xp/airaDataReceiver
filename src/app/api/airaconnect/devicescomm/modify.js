@@ -1,41 +1,43 @@
 const fieldChecks = [
   {
-    fieldName: 'uuid',
-    fieldType: 'nonempty',
+    fieldName: "uuid",
+    fieldType: "nonempty",
     required: true,
   },
   {
-    fieldName: 'data',
-    fieldType: 'object',
+    fieldName: "data",
+    fieldType: "object",
     required: true,
   },
 ];
 
 const fieldChecksData = [
   {
-    fieldName: 'name',
-    fieldType: 'string',
+    fieldName: "name",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'model',
-    fieldType: 'string',
+    fieldName: "model",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'ip',
-    fieldType: 'string',
+    fieldName: "ip",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'port',
-    fieldType: 'number',
+    fieldName: "port",
+    fieldType: "number",
     required: false,
   },
 ];
 
 module.exports = async (rData) => {
-  global.spiderman.systemlog.writeInfo(`devicescomm modify ${rData.uuid} ${rData.data.name}`);
+  global.spiderman.systemlog.writeInfo(
+    `devicescomm modify ${rData.uuid} ${rData.data.name}`,
+  );
 
   const { uuid } = global.spiderman.validate.data({
     data: rData,
@@ -49,9 +51,11 @@ module.exports = async (rData) => {
 
   await global.domain.devicescomm.modify({ uuid, ...data });
 
-  global.spiderman.systemlog.writeInfo(`devicescomm modify ${rData.uuid} ${rData.data.name}`);
+  global.spiderman.systemlog.writeInfo(
+    `devicescomm modify ${rData.uuid} ${rData.data.name}`,
+  );
 
   return {
-    message: 'ok',
+    message: "ok",
   };
 };

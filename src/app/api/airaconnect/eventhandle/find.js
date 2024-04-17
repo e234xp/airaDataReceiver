@@ -1,18 +1,20 @@
 const fieldChecks = [
   {
-    fieldName: 'uuid',
-    fieldType: 'string',
+    fieldName: "uuid",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'action_type',
-    fieldType: 'array',
+    fieldName: "action_type",
+    fieldType: "array",
     required: false,
   },
 ];
 
 module.exports = async (data) => {
-  global.spiderman.systemlog.writeInfo(`eventhandle find ${JSON.stringify(data)}`);
+  global.spiderman.systemlog.writeInfo(
+    `eventhandle find ${JSON.stringify(data)}`,
+  );
 
   data = global.spiderman.validate.data({
     data,
@@ -24,18 +26,23 @@ module.exports = async (data) => {
   const { uuid, action_type: actionType } = data;
 
   const { totalLength, result } = await global.domain.eventhandle.find({
-    uuid, actionType, sliceShift, sliceLength,
+    uuid,
+    actionType,
+    sliceShift,
+    sliceLength,
   });
 
   const ret = {
-    message: 'ok',
+    message: "ok",
     total_length: totalLength,
     slice_shift: sliceShift,
     slice_length: sliceLength,
     list: result,
   };
 
-  global.spiderman.systemlog.writeInfo(`dashboardsettings get ${JSON.stringify(ret)}`);
+  global.spiderman.systemlog.writeInfo(
+    `dashboardsettings get ${JSON.stringify(ret)}`,
+  );
 
   return ret;
 };

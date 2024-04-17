@@ -1,16 +1,13 @@
-const fs = require('fs');
-const jsonfile = require('jsonfile');
-const _ = require('lodash');
+const fs = require("fs");
+const jsonfile = require("jsonfile");
+const _ = require("lodash");
 
 module.exports = ({
   workingFolder,
   name,
-  cache: {
-    isOpen: isOpenCache = false,
-    maxBytes: maxBytesCache = 0,
-  },
+  cache: { isOpen: isOpenCache = false, maxBytes: maxBytesCache = 0 },
 }) => {
-  let FILE_PATH = '';
+  let FILE_PATH = "";
 
   // if (name === 'serverprofile') {
   //   FILE_PATH = `${global.params.fileroot}/config/serverprofile.json`;
@@ -83,7 +80,10 @@ module.exports = ({
     if (!query) {
       return data;
     }
-    const { data: filterd } = global.spiderman.query({ data, queryObject: query });
+    const { data: filterd } = global.spiderman.query({
+      data,
+      queryObject: query,
+    });
 
     return filterd;
   }
@@ -102,7 +102,7 @@ module.exports = ({
     if (Array.isArray(data)) {
       const { indexes } = global.spiderman.query({ data, queryObject: query });
       if (indexes.length === 0) {
-        throw Error('Item not found.');
+        throw Error("Item not found.");
       }
       const index = indexes[0];
       updatedItem = { ...data[index], ...update };
@@ -125,7 +125,7 @@ module.exports = ({
     const data = readData();
     const { indexes } = global.spiderman.query({ data, queryObject: query });
     if (indexes.length === 0) {
-      throw Error('Item not found.');
+      throw Error("Item not found.");
     }
     const index = indexes[0];
 
@@ -139,9 +139,12 @@ module.exports = ({
   function deleteMany(query) {
     const data = readData();
 
-    const { data: deletedItems } = global.spiderman.query({ data, queryObject: query });
+    const { data: deletedItems } = global.spiderman.query({
+      data,
+      queryObject: query,
+    });
     if (deletedItems.length === 0) {
-      throw Error('Item not found.');
+      throw Error("Item not found.");
     }
     const filteredData = data.filter((item) => !deletedItems.includes(item));
     writeData(filteredData);

@@ -1,18 +1,20 @@
 const fieldChecks = [
   {
-    fieldName: 'username',
-    fieldType: 'string',
+    fieldName: "username",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'password',
-    fieldType: 'string',
+    fieldName: "password",
+    fieldType: "string",
     required: true,
   },
 ];
 
 module.exports = (data) => {
-  global.spiderman.systemlog.writeInfo(`token generate ${JSON.stringify(data)}`);
+  global.spiderman.systemlog.writeInfo(
+    `token generate ${JSON.stringify(data)}`,
+  );
 
   data = global.spiderman.validate.data({
     data,
@@ -23,12 +25,12 @@ module.exports = (data) => {
   const account = global.spiderman.db.account.findOne({ username, password });
 
   if (!account) {
-    global.spiderman.systemlog.writeError('Unauthorized');
-    throw Error('Unauthorized');
+    global.spiderman.systemlog.writeError("Unauthorized");
+    throw Error("Unauthorized");
   }
 
   const ret = {
-    message: 'ok',
+    message: "ok",
     username: account.username,
     permission: account.permission,
     expire: Date.now(),

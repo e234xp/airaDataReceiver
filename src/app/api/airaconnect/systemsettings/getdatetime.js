@@ -1,37 +1,38 @@
-const fs = require('fs');
-const exec = require('child_process').exec;
+const fs = require("fs");
+const exec = require("child_process").exec;
 
 function execute(command, callback) {
   exec(command, function (error, stdout, stderr) {
-    if (stderr)
-      callback(stderr);
-    else
-      callback(stdout);
+    if (stderr) callback(stderr);
+    else callback(stdout);
   });
 }
 
 module.exports = async () => {
-  global.spiderman.systemlog.writeInfo('systemsettings getdatetime');
+  global.spiderman.systemlog.writeInfo("systemsettings getdatetime");
 
   const self = this;
 
-  self.timezone_path = '/etc/timezone';
-  self.ntpserver_path = '/etc/systemd/timesyncd.conf';
+  self.timezone_path = "/etc/timezone";
+  self.ntpserver_path = "/etc/systemd/timesyncd.conf";
 
   let timezone = "";
   if (fs.existsSync(self.timezone_path))
-    timezone = fs.readFileSync(self.timezone_path, { encoding: 'utf-8' }).replace('\n', '').trim();
+    timezone = fs
+      .readFileSync(self.timezone_path, { encoding: "utf-8" })
+      .replace("\n", "")
+      .trim();
 
   let lines = [];
   let ntp_enable = false;
   await new Promise((resolve, reject) => {
-    execute('timedatectl', function (callback) {
-      lines = callback.split('\n');
+    execute("timedatectl", function (callback) {
+      lines = callback.split("\n");
 
       for (var i = 0; i < lines.length; i++) {
-        var tmp = (lines[i].trim() + ':').split(":");
+        var tmp = (lines[i].trim() + ":").split(":");
 
-        if (tmp[0] == 'NTP service')
+        if (tmp[0] == "NTP service")
           ntp_enable = tmp[1].trim() == "active" ? true : false;
       }
 
@@ -39,19 +40,20 @@ module.exports = async () => {
     });
   });
 
-  let ntp_servername = '';
+  let ntp_servername = "";
   await new Promise((resolve, reject) => {
     lines = [];
     if (fs.existsSync(self.ntpserver_path)) {
-      lines = fs.readFileSync(self.ntpserver_path, { encoding: 'utf-8' }).split('\n');
+      lines = fs
+        .readFileSync(self.ntpserver_path, { encoding: "utf-8" })
+        .split("\n");
       for (var i = 0; i < lines.length; i++) {
         var tmp = lines[i].trim();
 
-        if (tmp[0] != '#') {
-          tmp = (lines[i].trim() + '=').split("=");
+        if (tmp[0] != "#") {
+          tmp = (lines[i].trim() + "=").split("=");
 
-          if (tmp[0].trim() == 'NTP')
-            ntp_servername = tmp[1].trim();
+          if (tmp[0].trim() == "NTP") ntp_servername = tmp[1].trim();
         }
       }
     }
@@ -64,15 +66,17 @@ module.exports = async () => {
     time_zone: timezone,
     enable_auto_time: ntp_enable,
     ntp_server: ntp_servername,
-    timestamp: datetime
+    timestamp: datetime,
   };
 
   const ret = {
-    message: 'ok',
+    message: "ok",
     settings: result,
   };
 
-  global.spiderman.systemlog.writeInfo(`systemsettings getdatetime ${JSON.stringify(ret)}`);
+  global.spiderman.systemlog.writeInfo(
+    `systemsettings getdatetime ${JSON.stringify(ret)}`,
+  );
 
   return ret;
 };

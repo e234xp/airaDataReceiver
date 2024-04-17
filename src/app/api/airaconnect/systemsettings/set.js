@@ -1,5 +1,7 @@
 module.exports = (data) => {
-  global.spiderman.systemlog.writeInfo(`systemsettings set ${JSON.stringify(data)}`);
+  global.spiderman.systemlog.writeInfo(
+    `systemsettings set ${JSON.stringify(data)}`,
+  );
 
   const settings = global.spiderman.db.serverprofile.find();
 
@@ -10,6 +12,6 @@ module.exports = (data) => {
   global.spiderman.db.serverprofile.updateOne({}, data);
 
   return {
-    message: 'ok',
+    message: "ok",
   };
 };

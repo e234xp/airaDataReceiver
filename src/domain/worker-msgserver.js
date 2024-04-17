@@ -11,11 +11,9 @@ module.exports = () => {
       port: metaPort,
       onReadly: (server) => {
         console.log("worker-msgserver onReadly");
-
       },
       onConnect: (server) => {
         console.log("worker-msgserver onConnect");
-
       },
       onData: (socket, data) => {
         // console.log("worker-msgserver onData");
@@ -23,11 +21,10 @@ module.exports = () => {
         try {
           global.spiderman.socket.broadcastMessage({
             socketServer: global.spiderman.server.wsDeviceStatus,
-            message: data.toString()
+            message: data.toString(),
           });
-        }
-        catch (ex) {
-          console.log('worker-msgserver onData', ex) ;
+        } catch (ex) {
+          console.log("worker-msgserver onData", ex);
         }
       },
 
@@ -36,7 +33,7 @@ module.exports = () => {
       },
       onError: () => {
         console.log("worker-msgserver onError");
-      }
+      },
     });
 
     console.log("worker-msgserver init end");
@@ -45,4 +42,4 @@ module.exports = () => {
   return {
     init,
   };
-}
+};

@@ -1,81 +1,83 @@
 const fieldChecks = [
   {
-    fieldName: 'uuid',
-    fieldType: 'nonempty',
+    fieldName: "uuid",
+    fieldType: "nonempty",
     required: true,
   },
   {
-    fieldName: 'data',
-    fieldType: 'object',
+    fieldName: "data",
+    fieldType: "object",
     required: true,
   },
 ];
 
 const fieldChecksData = [
   {
-    fieldName: 'serial',
-    fieldType: 'number',
+    fieldName: "serial",
+    fieldType: "number",
     required: true,
   },
   {
-    fieldName: 'gateId',
-    fieldType: 'string',
+    fieldName: "gateId",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'deviceId',
-    fieldType: 'string',
+    fieldName: "deviceId",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'name',
-    fieldType: 'string',
+    fieldName: "name",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'model',
-    fieldType: 'string',
+    fieldName: "model",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'typeId',
-    fieldType: 'string',
+    fieldName: "typeId",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'protocol',
-    fieldType: 'string',
+    fieldName: "protocol",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'group',
-    fieldType: 'string',
+    fieldName: "group",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'areaId',
-    fieldType: 'string',
+    fieldName: "areaId",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'locationId',
-    fieldType: 'string',
+    fieldName: "locationId",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'camera',
-    fieldType: 'array',
+    fieldName: "camera",
+    fieldType: "array",
     required: false,
   },
   {
-    fieldName: 'signal',
-    fieldType: 'array',
+    fieldName: "signal",
+    fieldType: "array",
     required: false,
   },
 ];
 
 module.exports = async (rData) => {
-  global.spiderman.systemlog.writeInfo(`devicesele modify ${rData.uuid} ${rData.data.name}`);
+  global.spiderman.systemlog.writeInfo(
+    `devicesele modify ${rData.uuid} ${rData.data.name}`,
+  );
 
   const { uuid } = global.spiderman.validate.data({
     data: rData,
@@ -89,9 +91,11 @@ module.exports = async (rData) => {
 
   await global.domain.devicesele.modify({ uuid, ...data });
 
-  global.spiderman.systemlog.writeInfo(`devicesele modify ${rData.uuid} ${rData.data.name}`);
+  global.spiderman.systemlog.writeInfo(
+    `devicesele modify ${rData.uuid} ${rData.data.name}`,
+  );
 
   return {
-    message: 'ok',
+    message: "ok",
   };
 };

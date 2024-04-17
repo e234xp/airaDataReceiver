@@ -1,16 +1,18 @@
 module.exports = () => {
-  global.spiderman.systemlog.writeInfo('systemsettings get');
+  global.spiderman.systemlog.writeInfo("systemsettings get");
 
   let settings = global.spiderman.db.serverprofile.find();
 
-  delete settings.session ;
+  delete settings.session;
 
   const ret = {
-    message: 'ok',
+    message: "ok",
     settings,
   };
 
-  global.spiderman.systemlog.writeInfo(`systemsettings find ${JSON.stringify(ret)}`);
+  global.spiderman.systemlog.writeInfo(
+    `systemsettings find ${JSON.stringify(ret)}`,
+  );
 
   return ret;
 };

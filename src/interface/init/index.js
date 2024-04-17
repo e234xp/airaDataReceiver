@@ -1,3 +1,3 @@
 module.exports = () => {
-  require('../../app/init')();
+  require("../../app/init")();
 };

@@ -1,7 +1,7 @@
 const fieldChecks = [
   {
-    fieldName: 'uuid',
-    fieldType: 'array',
+    fieldName: "uuid",
+    fieldType: "array",
     required: false,
   },
   // {
@@ -22,6 +22,6 @@ module.exports = async (data) => {
   await global.domain.devicegroup.remove(data);
 
   return {
-    message: 'ok',
+    message: "ok",
   };
 };

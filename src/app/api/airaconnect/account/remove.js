@@ -1,13 +1,15 @@
 const fieldChecks = [
   {
-    fieldName: 'account_uuid_list',
-    fieldType: 'array',
+    fieldName: "account_uuid_list",
+    fieldType: "array",
     required: true,
   },
 ];
 
 module.exports = (data, token) => {
-  global.spiderman.systemlog.writeInfo(`account remove ${JSON.stringify(data)}`);
+  global.spiderman.systemlog.writeInfo(
+    `account remove ${JSON.stringify(data)}`,
+  );
 
   // paramters checker
   data = global.spiderman.validate.data({
@@ -17,16 +19,18 @@ module.exports = (data, token) => {
 
   const tokenUser = global.spiderman.token.decryptToAccount(token);
   if (!tokenUser.u || data.account_uuid_list.length === 0) {
-    throw new Error('list cannot be empty');
+    throw new Error("list cannot be empty");
   }
 
   const accounts = global.spiderman.db.account.find();
 
   // 檢查是否為使用Admin權限
-  const isAdmin = accounts.some((a) => a.username === tokenUser.u && a.permission === 'Admin');
+  const isAdmin = accounts.some(
+    (a) => a.username === tokenUser.u && a.permission === "Admin",
+  );
   if (!isAdmin) {
-    global.spiderman.systemlog.writeError('No permission.');
-    throw Error('No permission.');
+    global.spiderman.systemlog.writeError("No permission.");
+    throw Error("No permission.");
   }
 
   const newAccountList = accounts.filter((item) => {
@@ -35,8 +39,8 @@ module.exports = (data, token) => {
   });
 
   if (newAccountList.length === accounts.length) {
-    global.spiderman.systemlog.writeError('Item not found.');
-    throw Error('Item not found.');
+    global.spiderman.systemlog.writeError("Item not found.");
+    throw Error("Item not found.");
   }
 
   global.spiderman.db.account.set(newAccountList);
@@ -44,6 +48,6 @@ module.exports = (data, token) => {
   global.spiderman.systemlog.writeInfo(`account remove ${newAccountList}`);
 
   return {
-    message: 'ok',
+    message: "ok",
   };
 };

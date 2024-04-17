@@ -15,14 +15,21 @@ module.exports = () => {
   }
 
   function connect({
-    host, port, user, pass, onConnect = () => { }, onData = () => { }, onClose = () => { }, onError = () => { },
+    host,
+    port,
+    user,
+    pass,
+    onConnect = () => {},
+    onData = () => {},
+    onClose = () => {},
+    onError = () => {},
   }) {
     // 建立 MQTT 連線
     client = mqtt.connect(`mqtt://${host}:${port}`, {
-      reconnectPeriod: 1000,      // Disable auto reconnect by setting to 0.
+      reconnectPeriod: 1000, // Disable auto reconnect by setting to 0.
       connectTimeout: 30 * 1000,
       username: user,
-      password: pass
+      password: pass,
     });
 
     // 連接到遠端伺服器
@@ -33,19 +40,19 @@ module.exports = () => {
     });
 
     // 監聽從伺服器接收的資料
-    client.on('message', (topic, message) => {
+    client.on("message", (topic, message) => {
       // console.log('MQTT onMessage');
       onData(client, topic, message);
     });
 
     // 監聽連線關閉事件
-    client.on('close', () => {
+    client.on("close", () => {
       // console.log('MQTT onClose', port, host);
       onClose(client);
     });
 
     // 監聽連線錯誤事件
-    client.on('error', (err) => {
+    client.on("error", (err) => {
       // console.error('MQTT onError', err);
       onError(client, err);
     });
@@ -56,14 +63,12 @@ module.exports = () => {
   function disconnnect() {
     // console.error('MQTT disconnnect');
 
-    if (client)
-      client.end();
-
+    if (client) client.end();
   }
 
   return {
     connect,
     disconnnect,
-    subscribe
+    subscribe,
   };
 };

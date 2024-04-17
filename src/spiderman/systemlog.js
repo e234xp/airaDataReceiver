@@ -1,14 +1,14 @@
 module.exports = () => {
   function writeInfo(logString) {
-    write({ logType: 'info', logString });
+    write({ logType: "info", logString });
   }
 
   function writeWarning(logString) {
-    write({ logType: 'warning', logString });
+    write({ logType: "warning", logString });
   }
 
   function writeError(logString) {
-    write({ logType: 'error', logString });
+    write({ logType: "error", logString });
   }
 
   return {

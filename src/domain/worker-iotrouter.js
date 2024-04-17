@@ -21,7 +21,6 @@ module.exports = () => {
     //     port: 8086
     //   }
     // ];
-
     // devices.forEach((dev) => {
     //   connect(dev);
     // });
@@ -35,16 +34,13 @@ module.exports = () => {
       port,
       onReadly: (server) => {
         // console.log("worker-iotrouter onReadly", server);
-
       },
       onConnect: (server) => {
         // console.log("worker-iotrouter onConnect", server);
-
         // const device = {
         //   ...dev,
         //   server,
         // };
-
         // allDevices.push(device);
       },
       onData: (socket, data) => {
@@ -52,7 +48,7 @@ module.exports = () => {
         let time = new Date().valueOf();
 
         let ipAddress = socket.remoteAddress;
-        ipAddress = ipAddress.replace('::ffff:', '');
+        ipAddress = ipAddress.replace("::ffff:", "");
         // console.log("worker-iotrouter onData", ipAddress);
 
         if (data[1] == 3) {
@@ -82,16 +78,56 @@ module.exports = () => {
             let windDir = -1.0;
             let windAngle = -1.0;
 
-            try { windSpeed = data[3] * 256 + data[4]; } catch (ex) { windSpeed = -1.0 };
-            try { windLevel = data[5] * 256 + data[6]; } catch (ex) { windLevel = -1.0 };
-            try { windDir = data[7] * 256 + data[8]; } catch (ex) { windDir = -1.0 };
-            try { windAngle = data[9] * 256 + data[10]; } catch (ex) { windAngle = -1.0 };
-            try { humidity = (data[11] * 256 + data[12]) / 10; } catch (ex) { humidity = -1.0 };
-            try { temperature = (data[13] * 256 + data[14]) / 10; } catch (ex) { temperature = -1.0 };
-            try { noise = (data[15] * 256 + data[16]) / 10; } catch (ex) { noise = -1.0 };
-            try { pm25 = data[17] * 256 + data[18]; } catch (ex) { pm25 = -1.0 };
-            try { pm10 = data[19] * 256 + data[20]; } catch (ex) { pm10 = -1.0 };
-            try { pressure = data[21] * 256 + data[22]; } catch (ex) { pressure = -1.0 };
+            try {
+              windSpeed = data[3] * 256 + data[4];
+            } catch (ex) {
+              windSpeed = -1.0;
+            }
+            try {
+              windLevel = data[5] * 256 + data[6];
+            } catch (ex) {
+              windLevel = -1.0;
+            }
+            try {
+              windDir = data[7] * 256 + data[8];
+            } catch (ex) {
+              windDir = -1.0;
+            }
+            try {
+              windAngle = data[9] * 256 + data[10];
+            } catch (ex) {
+              windAngle = -1.0;
+            }
+            try {
+              humidity = (data[11] * 256 + data[12]) / 10;
+            } catch (ex) {
+              humidity = -1.0;
+            }
+            try {
+              temperature = (data[13] * 256 + data[14]) / 10;
+            } catch (ex) {
+              temperature = -1.0;
+            }
+            try {
+              noise = (data[15] * 256 + data[16]) / 10;
+            } catch (ex) {
+              noise = -1.0;
+            }
+            try {
+              pm25 = data[17] * 256 + data[18];
+            } catch (ex) {
+              pm25 = -1.0;
+            }
+            try {
+              pm10 = data[19] * 256 + data[20];
+            } catch (ex) {
+              pm10 = -1.0;
+            }
+            try {
+              pressure = data[21] * 256 + data[22];
+            } catch (ex) {
+              pressure = -1.0;
+            }
 
             // console.log("worker-iotrouter onData", pm25, pm10, humidity, temperature, noise, windSpeed, windLevel, windDir, windAngle );
 
@@ -102,47 +138,57 @@ module.exports = () => {
               windSpeed,
               windLevel,
               windDir,
-              windAngle
+              windAngle,
             };
             console.log("worker-iotrouter onData", message);
 
             global.domain.workerMongo.insertOne(
-              'DeviceRow',
-              { topic: ipAddress, time, datetime: new Date(time).toLocaleString(), message: message },
+              "DeviceRow",
+              {
+                topic: ipAddress,
+                time,
+                datetime: new Date(time).toLocaleString(),
+                message: message,
+              },
               (err, data) => {
                 if (data) {
                   data.forEach((record) => {
-                    console.log('mqtt workder onData', record);
+                    console.log("mqtt workder onData", record);
                     global.spiderman.socket.broadcastMessage({
                       socketServer: global.spiderman.server.wsDeviceStatus,
-                      message: JSON.stringify(record)
+                      message: JSON.stringify(record),
                     });
                   });
                 }
-              }
-            )
+              },
+            );
 
             message = {
               T: temperature,
-              H: humidity
-            }
+              H: humidity,
+            };
             console.log("worker-iotrouter onData", message);
 
             global.domain.workerMongo.insertOne(
-              'DeviceRow',
-              { topic: ipAddress, time, datetime: new Date(time).toLocaleString(), message: message },
+              "DeviceRow",
+              {
+                topic: ipAddress,
+                time,
+                datetime: new Date(time).toLocaleString(),
+                message: message,
+              },
               (err, data) => {
                 if (data) {
                   data.forEach((record) => {
-                    console.log('mqtt workder onData', record);
+                    console.log("mqtt workder onData", record);
                     global.spiderman.socket.broadcastMessage({
                       socketServer: global.spiderman.server.wsDeviceStatus,
-                      message: JSON.stringify(record)
+                      message: JSON.stringify(record),
                     });
                   });
                 }
-              }
-            )
+              },
+            );
           }
 
           if (data[0] == 2) {
@@ -160,71 +206,96 @@ module.exports = () => {
             let humidity = -1.0;
             let temperature = -1.0;
 
-            try { humidity = (data[3] * 256 + data[4]) / 10; } catch (ex) { humidity = -1.0 };
-            try { temperature = (data[5] * 256 + data[6]) / 10; } catch (ex) { temperature = -1.0 };
-            try { noise = (data[7] * 256 + data[8]) / 10; } catch (ex) { noise = -1.0 };
-            try { pm25 = data[9] * 256 + data[10]; } catch (ex) { pm25 = -1.0 };
-            try { pm10 = data[11] * 256 + data[12]; } catch (ex) { pm10 = -1.0 };
+            try {
+              humidity = (data[3] * 256 + data[4]) / 10;
+            } catch (ex) {
+              humidity = -1.0;
+            }
+            try {
+              temperature = (data[5] * 256 + data[6]) / 10;
+            } catch (ex) {
+              temperature = -1.0;
+            }
+            try {
+              noise = (data[7] * 256 + data[8]) / 10;
+            } catch (ex) {
+              noise = -1.0;
+            }
+            try {
+              pm25 = data[9] * 256 + data[10];
+            } catch (ex) {
+              pm25 = -1.0;
+            }
+            try {
+              pm10 = data[11] * 256 + data[12];
+            } catch (ex) {
+              pm10 = -1.0;
+            }
 
             // console.log("worker-iotrouter onData", pm25, pm10, humidity, temperature, noise);
 
             let message = {
               pm10,
               pm25,
-              noise
+              noise,
             };
             console.log("worker-iotrouter onData", message);
 
             global.domain.workerMongo.insertOne(
-              'DeviceRow',
-              { topic: ipAddress, time, datetime: new Date(time).toLocaleString(), message: message },
+              "DeviceRow",
+              {
+                topic: ipAddress,
+                time,
+                datetime: new Date(time).toLocaleString(),
+                message: message,
+              },
               (err, data) => {
                 if (data) {
                   data.forEach((record) => {
-                    console.log('mqtt workder onData', record);
+                    console.log("mqtt workder onData", record);
                     global.spiderman.socket.broadcastMessage({
                       socketServer: global.spiderman.server.wsDeviceStatus,
-                      message: JSON.stringify(record)
+                      message: JSON.stringify(record),
                     });
                   });
                 }
-              }
-            )
+              },
+            );
 
             message = {
               T: temperature,
-              H: humidity
-            }
+              H: humidity,
+            };
             console.log("worker-iotrouter onData", message);
 
             global.domain.workerMongo.insertOne(
-              'DeviceRow',
-              { topic: ipAddress, time, datetime: new Date(time).toLocaleString(), message: message },
+              "DeviceRow",
+              {
+                topic: ipAddress,
+                time,
+                datetime: new Date(time).toLocaleString(),
+                message: message,
+              },
               (err, data) => {
                 if (data) {
                   data.forEach((record) => {
-                    console.log('mqtt workder onData', record);
+                    console.log("mqtt workder onData", record);
                     global.spiderman.socket.broadcastMessage({
                       socketServer: global.spiderman.server.wsDeviceStatus,
-                      message: JSON.stringify(record)
+                      message: JSON.stringify(record),
                     });
                   });
-
-
                 }
-              }
-            )
+              },
+            );
           }
         }
       },
 
       onClose: () => {
         // todo 自動恢復連線
-
       },
-      onError: () => {
-
-      }
+      onError: () => {},
     });
   }
 

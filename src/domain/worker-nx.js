@@ -1,26 +1,46 @@
 const { reject } = require("lodash");
 const { resolve } = require("mongodb/lib/core/topologies/read_preference");
-const request = require("request")
+const request = require("request");
 
 module.exports = () => {
   // function init() {
 
   // }
 
-  async function getMediaUrl_ts(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime, callabck) {
+  async function getMediaUrl_ts(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    cameraId,
+    startTime,
+    endTime,
+    callabck,
+  ) {
     const localStartTime = Math.floor(+startTime / 1000) * 1000;
     const localEndTime = Math.floor(+endTime / 1000) * 1000;
 
     let token = "";
     if (authorization == "bearer")
-      token = await global.spiderman.nxdriver.getBearerToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await global.spiderman.nxdriver.getBasicToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     return new Promise((resolve) => {
       let targetMedia = `https://${username}:${password}@${serverAddress}:${serverPort}/hls/${cameraId}.ts?access_token=${bearerToken}`;
       if (startTime != 0 && endTime != 0) {
-        const duration = (localEndTime / 1000) - (localStartTime / 1000);
+        const duration = localEndTime / 1000 - localStartTime / 1000;
         if (duration > 0) {
           targetMedia += `&pos=${localStartTime}&duration=${duration}`;
         }
@@ -31,8 +51,8 @@ module.exports = () => {
           url: targetMedia,
           username: username,
           password: password,
-          token: token
-        }
+          token: token,
+        },
       };
       if (callabck) {
         callabck(Object.assign({}, returnData));
@@ -41,24 +61,43 @@ module.exports = () => {
     });
   }
 
-  async function getMediaUrl_mkv(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime, callabck) {
+  async function getMediaUrl_mkv(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    cameraId,
+    startTime,
+    endTime,
+    callabck,
+  ) {
     const localStartTime = Math.floor(+startTime / 1000) * 1000;
     const localEndTime = Math.floor(+endTime / 1000) * 1000;
 
     let token = "";
     if (authorization == "bearer")
-      token = await global.spiderman.nxdriver.getBearerToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await global.spiderman.nxdriver.getBasicToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     return new Promise((resolve) => {
       let targetMedia = `https://${username}:${password}@${serverAddress}:${serverPort}/hls/${cameraId}.mkv?access_token=${token}`;
       if (startTime != 0 && endTime != 0) {
-        const duration = (localEndTime / 1000) - (localStartTime / 1000);
+        const duration = localEndTime / 1000 - localStartTime / 1000;
         if (duration > 0) {
           targetMedia += `&pos=${localStartTime}&duration=${duration}`;
         }
-
       }
       const returnData = {
         error: null,
@@ -66,8 +105,8 @@ module.exports = () => {
           url: targetMedia,
           username: username,
           password: password,
-          token: token
-        }
+          token: token,
+        },
       };
       if (callabck) {
         callabck(Object.assign({}, returnData));
@@ -76,7 +115,17 @@ module.exports = () => {
     });
   }
 
-  async function getMediaUrl_webm(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime, callabck) {
+  async function getMediaUrl_webm(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    cameraId,
+    startTime,
+    endTime,
+    callabck,
+  ) {
     const localStartTime = Math.floor(+startTime / 1000) * 1000;
     const localEndTime = Math.floor(+endTime / 1000) * 1000;
 
@@ -85,9 +134,19 @@ module.exports = () => {
 
     let token = "";
     if (authorization == "bearer")
-      token = await global.spiderman.nxdriver.getBearerToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await global.spiderman.nxdriver.getBasicToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     return new Promise((resolve) => {
       let targetMedia = `https://${username}:${password}@${serverAddress}:${serverPort}/media/${cameraId}.webm?access_token=${token}`;
@@ -101,8 +160,8 @@ module.exports = () => {
           url: targetMedia,
           username: username,
           password: password,
-          token: token
-        }
+          token: token,
+        },
       };
       if (callabck) {
         callabck(Object.assign({}, returnData));
@@ -111,7 +170,17 @@ module.exports = () => {
     });
   }
 
-  async function getMediaUrl_mp4(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime, callabck) {
+  async function getMediaUrl_mp4(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    cameraId,
+    startTime,
+    endTime,
+    callabck,
+  ) {
     const localStartTime = Math.floor(+startTime / 1000) * 1000;
     const localEndTime = Math.floor(+endTime / 1000) * 1000;
 
@@ -120,9 +189,19 @@ module.exports = () => {
 
     let token = "";
     if (authorization == "bearer")
-      token = await global.spiderman.nxdriver.getBearerToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await global.spiderman.nxdriver.getBasicToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     return new Promise((resolve) => {
       let targetMedia = `https://${username}:${password}@${serverAddress}:${serverPort}/media/${cameraId}.mp4?access_token=${token}`;
@@ -136,8 +215,8 @@ module.exports = () => {
           url: targetMedia,
           username: username,
           password: password,
-          token: token
-        }
+          token: token,
+        },
       };
       if (callabck) {
         callabck(Object.assign({}, returnData));
@@ -146,7 +225,17 @@ module.exports = () => {
     });
   }
 
-  async function getMediaUrl_mpegts(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime, callabck) {
+  async function getMediaUrl_mpegts(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    cameraId,
+    startTime,
+    endTime,
+    callabck,
+  ) {
     const localStartTime = Math.floor(+startTime / 1000) * 1000;
     const localEndTime = Math.floor(+endTime / 1000) * 1000;
 
@@ -155,9 +244,19 @@ module.exports = () => {
 
     let token = "";
     if (authorization == "bearer")
-      token = await global.spiderman.nxdriver.getBearerToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await global.spiderman.nxdriver.getBasicToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     return new Promise((resolve) => {
       let targetMedia = `https://${username}:${password}@${serverAddress}:${serverPort}/media/${cameraId}.mpegts?access_token=${token}`;
@@ -171,8 +270,8 @@ module.exports = () => {
           url: targetMedia,
           username: username,
           password: password,
-          token: token
-        }
+          token: token,
+        },
       };
       if (callabck) {
         callabck(Object.assign({}, returnData));
@@ -181,20 +280,40 @@ module.exports = () => {
     });
   }
 
-  async function getMediaUrl_m3u8(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime, callabck) {
+  async function getMediaUrl_m3u8(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    cameraId,
+    startTime,
+    endTime,
+    callabck,
+  ) {
     const localStartTime = Math.floor(+startTime / 1000) * 1000;
     const localEndTime = Math.floor(+endTime / 1000) * 1000;
 
     let token = "";
     if (authorization == "bearer")
-      token = await global.spiderman.nxdriver.getBearerToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await global.spiderman.nxdriver.getBasicToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     return new Promise((resolve) => {
       let targetMedia = `https://${username}:${password}@${serverAddress}:${serverPort}/hls/${cameraId}.m3u8?access_token=${token}`;
       if (startTime != 0 && endTime != 0) {
-        const duration = (localEndTime / 1000) - (localStartTime / 1000);
+        const duration = localEndTime / 1000 - localStartTime / 1000;
         if (duration > 0) {
           targetMedia += `&pos=${localStartTime}&duration=${duration}`;
         }
@@ -205,8 +324,8 @@ module.exports = () => {
           url: targetMedia,
           username: username,
           password: password,
-          token: token
-        }
+          token: token,
+        },
       };
       if (callabck) {
         callabck(Object.assign({}, returnData));
@@ -215,8 +334,21 @@ module.exports = () => {
     });
   }
 
-  async function getSysteminfo(serverAddress, serverPort, username, password, authorization, callabck) {
-    const ret = await global.spiderman.nxdriver.getSysteminfo(serverAddress, serverPort, username, password, authorization);
+  async function getSysteminfo(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    callabck,
+  ) {
+    const ret = await global.spiderman.nxdriver.getSysteminfo(
+      serverAddress,
+      serverPort,
+      username,
+      password,
+      authorization,
+    );
     return new Promise((resolve) => {
       if (callabck) {
         callabck(Object.assign({}, ret));
@@ -225,8 +357,21 @@ module.exports = () => {
     });
   }
 
-  async function getServerList(serverAddress, serverPort, username, password, authorization, callabck) {
-    const ret = await global.spiderman.nxdriver.getMediaServersEx(serverAddress, serverPort, username, password, authorization);
+  async function getServerList(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    callabck,
+  ) {
+    const ret = await global.spiderman.nxdriver.getMediaServersEx(
+      serverAddress,
+      serverPort,
+      username,
+      password,
+      authorization,
+    );
 
     return new Promise((resolve) => {
       if (callabck) {
@@ -236,8 +381,21 @@ module.exports = () => {
     });
   }
 
-  async function getCameraList(serverAddress, serverPort, username, password, authorization, callabck) {
-    const ret = await global.spiderman.nxdriver.getCamerasEx(serverAddress, serverPort, username, password, authorization);
+  async function getCameraList(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    callabck,
+  ) {
+    const ret = await global.spiderman.nxdriver.getCamerasEx(
+      serverAddress,
+      serverPort,
+      username,
+      password,
+      authorization,
+    );
     return new Promise((resolve) => {
       if (callabck) {
         callabck(Object.assign({}, ret));
@@ -246,8 +404,23 @@ module.exports = () => {
     });
   }
 
-  async function getAddBookmarkEx(serverAddress, serverPort, username, password, authorization, params, callabck) {
-    const ret = await global.spiderman.nxdriver.getAddBookmarkEx(serverAddress, serverPort, username, password, authorization, params);
+  async function getAddBookmarkEx(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    params,
+    callabck,
+  ) {
+    const ret = await global.spiderman.nxdriver.getAddBookmarkEx(
+      serverAddress,
+      serverPort,
+      username,
+      password,
+      authorization,
+      params,
+    );
     return new Promise((resolve) => {
       if (callabck) {
         callabck(Object.assign({}, ret));
@@ -256,18 +429,35 @@ module.exports = () => {
     });
   }
 
-  async function getSnapshotUrl(serverAddress, serverPort, username, password, authorization, params, callabck) {
+  async function getSnapshotUrl(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    params,
+    callabck,
+  ) {
     let token = "";
     if (authorization == "bearer")
-      token = await global.spiderman.nxdriver.getBearerToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await global.spiderman.nxdriver.getBasicToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     return new Promise((resolve) => {
       let targetMedia = `https://${username}:${password}@${serverAddress}:${serverPort}/ec2/cameraThumbnail?access_token=${token}&cameraId=${params.cameraId}`;
 
-      if (params.timeStamp)
-        targetMedia += `&time=${params.timeStamp}`;
+      if (params.timeStamp) targetMedia += `&time=${params.timeStamp}`;
 
       const returnData = {
         error: null,
@@ -276,7 +466,7 @@ module.exports = () => {
           username: username,
           password: password,
           token: token,
-        }
+        },
       };
 
       if (callabck) {
@@ -286,11 +476,17 @@ module.exports = () => {
     });
   }
 
-  async function viewmedia(serverAddress, serverPort, username, password, authorization, params) {
+  async function viewmedia(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    params,
+  ) {
     try {
       if (mediaRequest) mediaRequest.abort();
-    }
-    catch (ex) { }
+    } catch (ex) {}
 
     console.log("nx viewmedia", params);
 
@@ -301,26 +497,80 @@ module.exports = () => {
 
     console.log("nx viewmedia", cameraId, startTime, endTime, mediaType);
 
-    let targetMedia = '';
+    let targetMedia = "";
 
     switch (mediaType) {
-      case 'webm':
-        targetMedia = await getMediaUrl_webm(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime);
+      case "webm":
+        targetMedia = await getMediaUrl_webm(
+          serverAddress,
+          serverPort,
+          username,
+          password,
+          authorization,
+          cameraId,
+          startTime,
+          endTime,
+        );
         break;
-      case 'ts':
-        targetMedia = await getMediaUrl_ts(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime);
+      case "ts":
+        targetMedia = await getMediaUrl_ts(
+          serverAddress,
+          serverPort,
+          username,
+          password,
+          authorization,
+          cameraId,
+          startTime,
+          endTime,
+        );
         break;
-      case 'mkv':
-        targetMedia = await getMediaUrl_mkv(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime);
+      case "mkv":
+        targetMedia = await getMediaUrl_mkv(
+          serverAddress,
+          serverPort,
+          username,
+          password,
+          authorization,
+          cameraId,
+          startTime,
+          endTime,
+        );
         break;
-      case 'mp4':
-        targetMedia = await getMediaUrl_mp4(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime);
+      case "mp4":
+        targetMedia = await getMediaUrl_mp4(
+          serverAddress,
+          serverPort,
+          username,
+          password,
+          authorization,
+          cameraId,
+          startTime,
+          endTime,
+        );
         break;
-      case 'mpegts':
-        targetMedia = await getMediaUrl_mpegts(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime);
+      case "mpegts":
+        targetMedia = await getMediaUrl_mpegts(
+          serverAddress,
+          serverPort,
+          username,
+          password,
+          authorization,
+          cameraId,
+          startTime,
+          endTime,
+        );
         break;
-      case 'm3u8':
-        targetMedia = await getMediaUrl_m3u8(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime);
+      case "m3u8":
+        targetMedia = await getMediaUrl_m3u8(
+          serverAddress,
+          serverPort,
+          username,
+          password,
+          authorization,
+          cameraId,
+          startTime,
+          endTime,
+        );
         break;
     }
 
@@ -328,15 +578,25 @@ module.exports = () => {
 
     console.log("nx viewmedia", targetMedia.data.url);
 
-    let token = '';
+    let token = "";
     if (authorization == "bearer")
-      token = await global.spiderman.nxdriver.getBearerToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await global.spiderman.nxdriver.getBasicToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     const options = {
       url: targetMedia.data.url,
-      responseType: 'stream',
+      responseType: "stream",
       timeout: 5000,
       headers: {
         "content-type": "text/json",
@@ -349,65 +609,83 @@ module.exports = () => {
 
     try {
       let contentLength = 0;
-      mediaRequest = request.get(options)
-        .on('response', function (response) {
-          console.log('response.statusCode', response.statusCode);
+      mediaRequest = request
+        .get(options)
+        .on("response", function (response) {
+          console.log("response.statusCode", response.statusCode);
           params.res.statusCode = response.statusCode;
 
-          console.log('response.headers', response.headers);
+          console.log("response.headers", response.headers);
 
           if (response.headers)
-            console.log('content-type', response.headers['content-type']);
+            console.log("content-type", response.headers["content-type"]);
 
-          if (response.headers['content-type'])
-            params.res.setHeader('content-type', response.headers['content-type']);
+          if (response.headers["content-type"])
+            params.res.setHeader(
+              "content-type",
+              response.headers["content-type"],
+            );
         })
-        .on('error', function (err) {
+        .on("error", function (err) {
           console.log("onerror", err);
         })
-        .on('data', function (chunk) {
+        .on("data", function (chunk) {
           contentLength += chunk.length;
           console.log("ondata", contentLength);
           params.res.write(chunk);
         })
-        .on('close', function () {
+        .on("close", function () {
           console.log("onclose");
         })
-        .on('end', function () {
-          if (contentLength == 0)
-            params.res.setHeader('content-length', 0);
+        .on("end", function () {
+          if (contentLength == 0) params.res.setHeader("content-length", 0);
 
           params.res.end();
           // console.log("onend");
         });
-    }
-    catch (ex) {
+    } catch (ex) {
       console.log("try catch", ex);
     }
   }
 
-  async function downloadvideomedia(serverAddress, serverPort, username, password, authorization, params) {
+  async function downloadvideomedia(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    params,
+  ) {
     try {
       if (mediaRequest) mediaRequest.abort();
-    }
-    catch (ex) { }
+    } catch (ex) {}
 
     let cameraId = params.cameraId;
     let startTime = params.startTime;
     let endTime = params.endTime;
     let fileName = params.fileName;
 
-    let token = '';
+    let token = "";
     if (authorization == "bearer")
-      token = await global.spiderman.nxdriver.getBearerToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await global.spiderman.nxdriver.getBasicToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     let targetMedia = `https://${username}:${password}@${serverAddress}:${serverPort}/media/${cameraId}.webm?access_token=${token}&pos=${startTime}&endPos=${endTime}`;
 
     const options = {
       url: targetMedia,
-      responseType: 'stream',
+      responseType: "stream",
       timeout: 5000,
       headers: {
         "content-type": "text/json",
@@ -425,54 +703,68 @@ module.exports = () => {
     return new Promise((resolve) => {
       try {
         const file = fs.createWriteStream(fileName);
-        mediaRequest = request.get(options)
+        mediaRequest = request
+          .get(options)
           // .pipe(file)
-          .on('response', function (response) {
-            console.log('statusCode', response.statusCode);
+          .on("response", function (response) {
+            console.log("statusCode", response.statusCode);
 
             if (response.statusCode == 200) {
-
-              file.on('finish', function () {
+              file.on("finish", function () {
                 console.log("finish");
                 file.close();
                 resolve(true);
               });
-              file.on('error', function (err) {
+              file.on("error", function (err) {
                 console.log("file error", err);
                 resolve(false);
               });
 
               response.pipe(file);
-            }
-            else {
+            } else {
               resolve(false);
             }
           })
-          .on('error', function (err) {
+          .on("error", function (err) {
             // console.log('response', err);
             // resolve(false);
-          })
-      }
-      catch (ex) {
+          });
+      } catch (ex) {
         console.log("try catch", ex);
         resolve(false);
       }
-    })
+    });
   }
 
-  async function viewsnapshot(serverAddress, serverPort, username, password, authorization, params) {
+  async function viewsnapshot(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    params,
+  ) {
     let targetSnapshot = "";
 
-    let token = '';
+    let token = "";
     if (authorization == "bearer")
-      token = await global.spiderman.nxdriver.getBearerToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await global.spiderman.nxdriver.getBasicToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     targetSnapshot = `https://${username}:${password}@${serverAddress}:${serverPort}/ec2/cameraThumbnail?cameraId=${params.cameraId}`;
 
-    if (params.timeStamp)
-      targetSnapshot += `&time=${params.timeStamp}`;
+    if (params.timeStamp) targetSnapshot += `&time=${params.timeStamp}`;
 
     console.log("targetSnapshot", targetSnapshot);
     const options = {
@@ -489,57 +781,67 @@ module.exports = () => {
 
     try {
       return await new Promise((resolve, reject) => {
-        const req = request.get(options)
-          .on('response', function (response) {
+        const req = request
+          .get(options)
+          .on("response", function (response) {
             params.res.statusCode = response.statusCode;
 
             try {
               if (response.headers) {
-                switch (response.headers['content-type']) {
-                  case 'image/jpg':
-                    params.res.setHeader('content-type', 'image/jpeg');
+                switch (response.headers["content-type"]) {
+                  case "image/jpg":
+                    params.res.setHeader("content-type", "image/jpeg");
                     break;
                   default:
-                    if (response.headers['content-type'])
-                      params.res.setHeader('content-type', response.headers['content-type']);
+                    if (response.headers["content-type"])
+                      params.res.setHeader(
+                        "content-type",
+                        response.headers["content-type"],
+                      );
                     break;
                 }
               }
-            }
-            catch (ex) {
+            } catch (ex) {
               console.log("nx viewsnapshot response", ex);
             }
           })
-          .on('error', function (err) {
+          .on("error", function (err) {
             console.log("onerror", err);
           })
-          .on('data', function (chunk) {
+          .on("data", function (chunk) {
             console.log("ondata", chunk.length);
             try {
               params.res.write(chunk);
-            }
-            catch (ex) {
+            } catch (ex) {
               console.log("nx viewsnapshot ondata", ex);
             }
           })
-          .on('close', function () {
+          .on("close", function () {
             console.log("onclose");
           })
-          .on('end', function () {
+          .on("end", function () {
             console.log("onend");
             params.res.end();
 
             resolve(true);
           });
-      })
-    }
-    catch (ex) {
-
+      });
+    } catch (ex) {
       console.log("try catch", ex);
     }
   }
 
-  async function getMotionMediaArchiveUrlList_webm(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime, callabck) {
+  async function getMotionMediaArchiveUrlList_webm(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    cameraId,
+    startTime,
+    endTime,
+    callabck,
+  ) {
     var timeStr = "";
 
     if (startTime && endTime) {
@@ -550,11 +852,21 @@ module.exports = () => {
       timeStr = `&startTime=${startTimeString}&endTime=${endTimeString}`;
     }
 
-    let token = '';
+    let token = "";
     if (authorization == "bearer")
-      token = await global.spiderman.nxdriver.getBearerToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await global.spiderman.nxdriver.getBasicToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     return new Promise((resolve) => {
       const optionsToFindMotionRec = {
@@ -575,24 +887,28 @@ module.exports = () => {
           try {
             const resDataMotionRec = JSON.parse(body);
             if (resDataMotionRec.reply && resDataMotionRec.reply.length > 0) {
-              resDataMotionRec.reply.forEach(reply => {
+              resDataMotionRec.reply.forEach((reply) => {
                 if (reply.periods && reply.periods.length > 0) {
-                  reply.periods.forEach(period => {
+                  reply.periods.forEach((period) => {
                     //console.log( period );
-                    var startPos = new Date(Number(period.startTimeMs)).toISOString();
-                    var endPos = new Date(Number(period.startTimeMs) + Number(period.durationMs)).toISOString();
+                    var startPos = new Date(
+                      Number(period.startTimeMs),
+                    ).toISOString();
+                    var endPos = new Date(
+                      Number(period.startTimeMs) + Number(period.durationMs),
+                    ).toISOString();
                     listToReturn.push({
                       camera_id: cameraId,
                       start_time: Number(period.startTimeMs),
-                      end_time: Number(period.startTimeMs) + Number(period.durationMs),
-                      url: `https://${username}:${password}@${serverAddress}:${serverPort}/media/${cameraId}.webm?pos=${startPos}&endPos=${endPos}&access_token=${token}`
+                      end_time:
+                        Number(period.startTimeMs) + Number(period.durationMs),
+                      url: `https://${username}:${password}@${serverAddress}:${serverPort}/media/${cameraId}.webm?pos=${startPos}&endPos=${endPos}&access_token=${token}`,
                     });
                   });
                 }
               });
             }
-          }
-          catch (e) { }
+          } catch (e) {}
         }
         if (callabck) {
           callabck(listToReturn);
@@ -602,7 +918,17 @@ module.exports = () => {
     });
   }
 
-  async function getMotionMediaArchiveUrlList_mp4(serverAddress, serverPort, username, password, authorization, cameraId, startTime, endTime, callabck) {
+  async function getMotionMediaArchiveUrlList_mp4(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    cameraId,
+    startTime,
+    endTime,
+    callabck,
+  ) {
     var timeStr = "";
     if (startTime && endTime) {
       var localStartTime = Math.floor(+startTime / 1000) * 1000;
@@ -612,11 +938,21 @@ module.exports = () => {
       timeStr = `&startTime=${startTimeString}&endTime=${endTimeString}`;
     }
 
-    let token = '';
+    let token = "";
     if (authorization == "bearer")
-      token = await global.spiderman.nxdriver.getBearerToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await global.spiderman.nxdriver.getBasicToken(serverAddress, serverPort, username, password);
+      token = await global.spiderman.nxdriver.getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     return new Promise((resolve) => {
       const optionsToFindMotionRec = {
@@ -637,24 +973,28 @@ module.exports = () => {
           try {
             const resDataMotionRec = JSON.parse(body);
             if (resDataMotionRec.reply && resDataMotionRec.reply.length > 0) {
-              resDataMotionRec.reply.forEach(reply => {
+              resDataMotionRec.reply.forEach((reply) => {
                 if (reply.periods && reply.periods.length > 0) {
-                  reply.periods.forEach(period => {
+                  reply.periods.forEach((period) => {
                     //console.log( period );
-                    var startPos = new Date(Number(period.startTimeMs)).toISOString();
-                    var endPos = new Date(Number(period.startTimeMs) + Number(period.durationMs)).toISOString();
+                    var startPos = new Date(
+                      Number(period.startTimeMs),
+                    ).toISOString();
+                    var endPos = new Date(
+                      Number(period.startTimeMs) + Number(period.durationMs),
+                    ).toISOString();
                     listToReturn.push({
                       camera_id: cameraId,
                       start_time: Number(period.startTimeMs),
-                      end_time: Number(period.startTimeMs) + Number(period.durationMs),
-                      url: `https://${username}:${password}@${serverAddress}:${serverPort}/media/${cameraId}.mp4?access_token=${token}&pos=${startPos}&endPos=${endPos}`
+                      end_time:
+                        Number(period.startTimeMs) + Number(period.durationMs),
+                      url: `https://${username}:${password}@${serverAddress}:${serverPort}/media/${cameraId}.mp4?access_token=${token}&pos=${startPos}&endPos=${endPos}`,
                     });
                   });
                 }
               });
             }
-          }
-          catch (e) { }
+          } catch (e) {}
         }
         if (callabck) {
           callabck(listToReturn);

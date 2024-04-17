@@ -1,30 +1,30 @@
 const fieldChecks = [
   {
-    fieldName: 'uuid',
-    fieldType: 'nonempty',
+    fieldName: "uuid",
+    fieldType: "nonempty",
     required: true,
   },
   {
-    fieldName: 'data',
-    fieldType: 'object',
+    fieldName: "data",
+    fieldType: "object",
     required: true,
   },
 ];
 
 const fieldChecksData = [
   {
-    fieldName: 'name',
-    fieldType: 'string',
+    fieldName: "name",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'remark',
-    fieldType: 'string',
+    fieldName: "remark",
+    fieldType: "string",
     required: false,
   },
   {
-    fieldName: 'list',
-    fieldType: 'array',
+    fieldName: "list",
+    fieldType: "array",
     required: false,
   },
 ];
@@ -47,6 +47,6 @@ module.exports = async (rData) => {
   global.spiderman.systemlog.writeInfo(`devicegroup modify ${rData.uuid}`);
 
   return {
-    message: 'ok',
+    message: "ok",
   };
 };

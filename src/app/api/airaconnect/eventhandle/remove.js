@@ -1,13 +1,15 @@
 const fieldChecks = [
   {
-    fieldName: 'uuid',
-    fieldType: 'array',
+    fieldName: "uuid",
+    fieldType: "array",
     required: true,
   },
 ];
 
 module.exports = async (data) => {
-  global.spiderman.systemlog.writeInfo(`eventhandle remove ${JSON.stringify(data)}`);
+  global.spiderman.systemlog.writeInfo(
+    `eventhandle remove ${JSON.stringify(data)}`,
+  );
 
   data = global.spiderman.validate.data({
     data,
@@ -17,6 +19,6 @@ module.exports = async (data) => {
   await global.domain.eventhandle.remove({ uuid: data.uuid });
 
   return {
-    message: 'ok',
+    message: "ok",
   };
 };

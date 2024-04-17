@@ -1,4 +1,4 @@
-const request = require("request")
+const request = require("request");
 // const fs = require("fs");
 
 module.exports = () => {
@@ -7,28 +7,31 @@ module.exports = () => {
 
     let ret = await new Promise((resolve) => {
       let data = {
-        "username": username,
-        "password": password,
-        "setCookie": true
+        username: username,
+        password: password,
+        setCookie: true,
       };
 
-      request.post(`https://${serverAddress}:${serverPort}/rest/v1/login/sessions`, { json: data }, function (err, response, body) {
+      request.post(
+        `https://${serverAddress}:${serverPort}/rest/v1/login/sessions`,
+        { json: data },
+        function (err, response, body) {
+          if (!err && response.statusCode == 200) {
+            // {
+            //     ageS: 1,
+            //     expiresInS: 2591999,
+            //     token: 'vms-b8d35182613056100cd8ef5a3f1cd7ab-e8oIlhHIOx',
+            //     username: 'admin'
+            // }
+            resolve(Object.assign({}, body));
+          }
 
-        if (!err && response.statusCode == 200) {
-          // {
-          //     ageS: 1,
-          //     expiresInS: 2591999,
-          //     token: 'vms-b8d35182613056100cd8ef5a3f1cd7ab-e8oIlhHIOx',
-          //     username: 'admin'
-          // }
-          resolve(Object.assign({}, body));
-        }
-
-        resolve(Object.assign({}, err));
-      });
+          resolve(Object.assign({}, err));
+        },
+      );
     });
 
-    let bearerToken = '';
+    let bearerToken = "";
     if (ret.token) {
       bearerToken = ret.token;
     }
@@ -42,19 +45,35 @@ module.exports = () => {
     const startTime = Date.now();
 
     let buff = Buffer.from(username + ":" + password, "utf-8");
-    let bearerToken = buff.toString('base64');
+    let bearerToken = buff.toString("base64");
 
     return bearerToken;
   }
 
-  async function getCamerasEx(serverAddress, serverPort, username, password, authorization = "basic") {
+  async function getCamerasEx(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization = "basic",
+  ) {
     const startTime = Date.now();
 
-    let token = '';
+    let token = "";
     if (authorization == "bearer")
-      token = await getBearerToken(serverAddress, serverPort, username, password);
+      token = await getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await getBasicToken(serverAddress, serverPort, username, password);
+      token = await getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     return new Promise((resolve) => {
       try {
@@ -117,46 +136,63 @@ module.exports = () => {
             },
             */
 
-            resData.forEach(cameraData => {
+            resData.forEach((cameraData) => {
               camListToReturn.push({
                 server: {
                   ip: serverAddress,
                   port: serverPort,
                   user: username,
-                  pass: password
+                  pass: password,
                 },
                 name: cameraData.name,
                 camera_id: cameraData.id.replace(/(\{)|(\})/g, ""),
                 parent_id: cameraData.parentId.replace(/(\{)|(\})/g, ""),
-                preferred_server_id: cameraData.preferredServerId.replace(/(\{)|(\})/g, ""),
+                preferred_server_id: cameraData.preferredServerId.replace(
+                  /(\{)|(\})/g,
+                  "",
+                ),
                 mac: cameraData.mac,
                 schedule_enabled: cameraData.scheduleEnabled,
                 vendor: cameraData.vendor,
-                status: cameraData.status // Online, Offline, Unauthorized, Recording
+                status: cameraData.status, // Online, Offline, Unauthorized, Recording
               });
             });
             const returnData = { error: null, data: camListToReturn };
             resolve(Object.assign({}, returnData));
-          }
-          else {
+          } else {
             resolve(Object.assign({}, { error: err }));
           }
         });
-      }
-      catch (e) {
+      } catch (e) {
         resolve(Object.assign({}, { error: e }));
       }
     });
   }
 
-  async function getSysteminfo(serverAddress, serverPort, username, password, authorization = "basic") {
+  async function getSysteminfo(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization = "basic",
+  ) {
     const startTime = Date.now();
 
-    let token = '';
+    let token = "";
     if (authorization == "bearer")
-      token = await getBearerToken(serverAddress, serverPort, username, password);
+      token = await getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await getBasicToken(serverAddress, serverPort, username, password);
+      token = await getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     return new Promise((resolve) => {
       try {
@@ -198,27 +234,48 @@ module.exports = () => {
             // }
             const returnData = { error: null, data: resData };
             resolve(Object.assign({}, returnData));
-          }
-          else {
-            resolve(Object.assign({}, { error: null, data: { "version": "4.2.0.32840" } }));
+          } else {
+            resolve(
+              Object.assign(
+                {},
+                { error: null, data: { version: "4.2.0.32840" } },
+              ),
+            );
           }
         });
-      }
-      catch (e) {
-        resolve(Object.assign({}, { error: null, data: { "version": "4.2.0.32840" } }));
+      } catch (e) {
+        resolve(
+          Object.assign({}, { error: null, data: { version: "4.2.0.32840" } }),
+        );
       }
     });
   }
 
-  async function getMediaServersEx(serverAddress, serverPort, username, password, authorization = "basic") {
+  async function getMediaServersEx(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization = "basic",
+  ) {
     const startTime = Date.now();
 
-    let token = '';
+    let token = "";
 
     if (authorization == "bearer")
-      token = await getBearerToken(serverAddress, serverPort, username, password);
+      token = await getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await getBasicToken(serverAddress, serverPort, username, password);
+      token = await getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     return new Promise((resolve) => {
       try {
@@ -269,42 +326,57 @@ module.exports = () => {
                 }
             */
 
-            resData.forEach(serverData => {
+            resData.forEach((serverData) => {
               svrListToReturn.push({
                 server: {
                   ip: serverAddress,
                   port: serverPort,
                   user: username,
-                  pass: password
+                  pass: password,
                 },
                 name: serverData.name,
                 id: serverData.id.replace(/(\{)|(\})/g, ""),
                 parent_id: serverData.parentId.replace(/(\{)|(\})/g, ""),
                 networkAddresses: serverData.networkAddresses,
                 status: serverData.status, // Online, Offline, Unauthorized, Recording
-                version: serverData.version
+                version: serverData.version,
               });
             });
             const returnData = { error: null, data: svrListToReturn };
             resolve(Object.assign({}, returnData));
-          }
-          else {
+          } else {
             resolve(Object.assign({}, { error: err }));
           }
         });
-      }
-      catch (e) {
+      } catch (e) {
         resolve(Object.assign({}, { error: e }));
       }
     });
   }
 
-  async function getAddBookmarkEx(serverAddress, serverPort, username, password, authorization, params) {
-    let token = '';
+  async function getAddBookmarkEx(
+    serverAddress,
+    serverPort,
+    username,
+    password,
+    authorization,
+    params,
+  ) {
+    let token = "";
     if (authorization == "bearer")
-      token = await getBearerToken(serverAddress, serverPort, username, password);
+      token = await getBearerToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
     else
-      token = await getBasicToken(serverAddress, serverPort, username, password);
+      token = await getBasicToken(
+        serverAddress,
+        serverPort,
+        username,
+        password,
+      );
 
     let cameraId = params.cameraId;
     let timestamp = params.timestamp;
@@ -320,14 +392,18 @@ module.exports = () => {
         // description=XXXXXXX
         let qs = `metadata={"cameraRefs":["${cameraId}"]}&timestamp=${timestamp}&caption=${caption}`;
 
-        if (description)
-          qs += `&description=${description}`;
+        if (description) qs += `&description=${description}`;
 
-        console.log(`https://${username}:${password}@${serverAddress}:${serverPort}/api/createEvent?` + qs);
+        console.log(
+          `https://${username}:${password}@${serverAddress}:${serverPort}/api/createEvent?` +
+            qs,
+        );
 
         let data = null;
         const options = {
-          url: `https://${username}:${password}@${serverAddress}:${serverPort}/api/createEvent?` + qs,
+          url:
+            `https://${username}:${password}@${serverAddress}:${serverPort}/api/createEvent?` +
+            qs,
           timeout: 5000,
           headers: {
             "content-type": "text/json",
@@ -345,15 +421,13 @@ module.exports = () => {
         const req = request.get(options, function (err, response, body) {
           if (!err && response.statusCode == 200) {
             const resData = JSON.parse(body);
-            const returnData = { error: null, };
+            const returnData = { error: null };
             resolve(Object.assign({}, returnData));
-          }
-          else {
+          } else {
             resolve(Object.assign({}, { error: err }));
           }
         });
-      }
-      catch (e) {
+      } catch (e) {
         resolve(Object.assign({}, { error: e }));
       }
     });
@@ -362,9 +436,9 @@ module.exports = () => {
   return {
     getBasicToken,
     getBearerToken,
-    getSysteminfo,      //
-    getCamerasEx,       //
-    getMediaServersEx,  //
-    getAddBookmarkEx,   //
+    getSysteminfo, //
+    getCamerasEx, //
+    getMediaServersEx, //
+    getAddBookmarkEx, //
   };
 };

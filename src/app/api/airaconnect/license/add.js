@@ -1,17 +1,17 @@
 const fieldChecks = [
   {
-    fieldName: 'license_server_address',
-    fieldType: 'string',
+    fieldName: "license_server_address",
+    fieldType: "string",
     required: true,
   },
   {
-    fieldName: 'license_server_port',
-    fieldType: 'number',
+    fieldName: "license_server_port",
+    fieldType: "number",
     required: true,
   },
   {
-    fieldName: 'license_key',
-    fieldType: 'string',
+    fieldName: "license_key",
+    fieldType: "string",
     required: true,
   },
 ];
@@ -26,17 +26,19 @@ module.exports = async (data) => {
 
   const response = await global.spiderman.request.make({
     url: `http://${global.params.localhost}/system/addlicense`,
-    method: 'POST',
+    method: "POST",
     pool: { maxSockets: 10 },
     time: true,
     timeout: 30000,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     json: data,
   });
 
-  global.spiderman.systemlog.writeInfo(`license add ${JSON.stringify(response.body)}`);
+  global.spiderman.systemlog.writeInfo(
+    `license add ${JSON.stringify(response.body)}`,
+  );
 
   return response;
 };

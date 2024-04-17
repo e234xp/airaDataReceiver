@@ -5,18 +5,18 @@ module.exports = () => {
     function calculateSize(obj) {
       if (obj !== null && obj !== undefined) {
         switch (typeof obj) {
-          case 'number':
+          case "number":
             bytes += 8;
             break;
-          case 'string':
+          case "string":
             bytes += obj.length * 2;
             break;
-          case 'boolean':
+          case "boolean":
             bytes += 4;
             break;
-          case 'object': {
+          case "object": {
             const objClass = Object.prototype.toString.call(obj).slice(8, -1);
-            if (objClass === 'Object' || objClass === 'Array') {
+            if (objClass === "Object" || objClass === "Array") {
               Object.keys(obj).forEach((key) => {
                 if (!Object.prototype.hasOwnProperty.call(obj, key)) return;
                 calculateSize(obj[key]);

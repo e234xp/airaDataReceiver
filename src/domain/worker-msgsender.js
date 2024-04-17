@@ -21,36 +21,37 @@ module.exports = () => {
 
   function send(data) {
     expressClient.send(
-      data
-      , 0
-      , data.length
-      , expressPort
-      , expressHost
-      , (err, bytes) => {
-        console.log(`worker-msgsender to ${expressHost} ${expressPort}`, err, bytes);
-      }
+      data,
+      0,
+      data.length,
+      expressPort,
+      expressHost,
+      (err, bytes) => {
+        console.log(
+          `worker-msgsender to ${expressHost} ${expressPort}`,
+          err,
+          bytes,
+        );
+      },
     );
 
-    metaClient.send(
-      data
-      , 0
-      , data.length
-      , metaPort
-      , metaHost
-      , (err, bytes) => {
-        console.log(`worker-msgsender to ${metaHost} ${metaPort}`, err, bytes);
-      }
-    );
+    metaClient.send(data, 0, data.length, metaPort, metaHost, (err, bytes) => {
+      console.log(`worker-msgsender to ${metaHost} ${metaPort}`, err, bytes);
+    });
 
     eventClient.send(
-      data
-      , 0
-      , data.length
-      , eventPort
-      , eventHost
-      , (err, bytes) => {
-        console.log(`worker-msgsender to ${eventHost} ${eventPort}`, err, bytes);
-      }
+      data,
+      0,
+      data.length,
+      eventPort,
+      eventHost,
+      (err, bytes) => {
+        console.log(
+          `worker-msgsender to ${eventHost} ${eventPort}`,
+          err,
+          bytes,
+        );
+      },
     );
   }
 
