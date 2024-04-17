@@ -1,5 +1,6 @@
 module.exports = () => {
   const { db } = global.spiderman;
+  const randomBytes = require('randombytes')
 
   let allGates = [];
 
@@ -65,24 +66,11 @@ module.exports = () => {
           delete obj["time"];
 
           if (topic === "GW-001/RM16-001") {
-            obj = {
-              DI0: Math.floor(Math.random() * 2),
-              DI1: Math.floor(Math.random() * 2),
-              DI2: Math.floor(Math.random() * 2),
-              DI3: Math.floor(Math.random() * 2),
-              DI4: Math.floor(Math.random() * 2),
-              DI5: Math.floor(Math.random() * 2),
-              DI6: Math.floor(Math.random() * 2),
-              DI7: Math.floor(Math.random() * 2),
-              DI8: Math.floor(Math.random() * 2),
-              DI9: Math.floor(Math.random() * 2),
-              DI10: Math.floor(Math.random() * 2),
-              DI11: Math.floor(Math.random() * 2),
-              DI12: Math.floor(Math.random() * 2),
-              DI13: Math.floor(Math.random() * 2),
-              DI14: Math.floor(Math.random() * 2),
-              DI15: Math.floor(Math.random() * 2),
-            };
+            const bits = randomBytes(1).at(0)
+            for (let index = 1; index < 8; index++) {
+              obj[`DI${index * 2}`] = bits & (1 << index) ? 1 : 0
+              obj[`DI${index * 2 + 1}`] = 1 - obj[`DI${index * 2}`]
+            }
           }
 
           message = JSON.stringify(obj);
