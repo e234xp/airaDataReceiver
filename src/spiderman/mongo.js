@@ -44,7 +44,7 @@ module.exports = () => {
           url += `${username}:${password}@`;
         }
 
-        url += `${host}:${port}`;
+        url += `${host}:${port}?directConnection=true`;
       }
 
       client = new MongoClient(url, option);

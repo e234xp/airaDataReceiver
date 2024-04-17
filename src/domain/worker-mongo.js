@@ -222,7 +222,7 @@ module.exports = () => {
       const collections = await conn.db(dbName).listCollections().toArray();
       collections.forEach((c) => {
         if (c.name != "system") {
-          conn.db(dbName).command({ compact: c.name }, function (err, result) {
+          conn.db(dbName).command({ compact: c.name, force: true }, function (err, result) {
             if (err) console.log("err 2", err);
             // console.log("databaseReclaiming result", result);
           });
