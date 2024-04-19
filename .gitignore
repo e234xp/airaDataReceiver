@@ -1,2 +1,5 @@
 node_modules
 src/data
+bin
+bundle.js
+!.giteep
