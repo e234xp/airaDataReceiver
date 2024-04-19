@@ -15,15 +15,16 @@ module.exports = () => {
   }
 
   function connectDevices() {
-    // const devices = [
-    //   {
-    //     host: "192.168.10.75",
-    //     port: 8086
-    //   }
-    // ];
-    // devices.forEach((dev) => {
-    //   connect(dev);
-    // });
+    const devices = [
+      {
+        host: "0.0.0.0",
+        port: 8086
+      }
+    ];
+
+    devices.forEach((dev) => {
+      connect(dev);
+    });
   }
 
   function connect(dev) {
@@ -153,11 +154,12 @@ module.exports = () => {
               (err, data) => {
                 if (data) {
                   data.forEach((record) => {
-                    console.log("mqtt workder onData", record);
-                    global.spiderman.socket.broadcastMessage({
-                      socketServer: global.spiderman.server.wsDeviceStatus,
-                      message: JSON.stringify(record),
-                    });
+                    console.log('iotrouter workder onData', record);
+                    global.domain.workerMsgSender.send(JSON.stringify(record)); // to Express and MetaProcess
+                    // global.spiderman.socket.broadcastMessage({
+                    //   socketServer: global.spiderman.server.wsDeviceStatus,
+                    //   message: JSON.stringify(record)
+                    // });
                   });
                 }
               },
@@ -180,11 +182,12 @@ module.exports = () => {
               (err, data) => {
                 if (data) {
                   data.forEach((record) => {
-                    console.log("mqtt workder onData", record);
-                    global.spiderman.socket.broadcastMessage({
-                      socketServer: global.spiderman.server.wsDeviceStatus,
-                      message: JSON.stringify(record),
-                    });
+                    console.log('iotrouter workder onData', record);
+                    global.domain.workerMsgSender.send(JSON.stringify(record)); // to Express and MetaProcess
+                    // global.spiderman.socket.broadcastMessage({
+                    //   socketServer: global.spiderman.server.wsDeviceStatus,
+                    //   message: JSON.stringify(record)
+                    // });
                   });
                 }
               },
@@ -252,11 +255,12 @@ module.exports = () => {
               (err, data) => {
                 if (data) {
                   data.forEach((record) => {
-                    console.log("mqtt workder onData", record);
-                    global.spiderman.socket.broadcastMessage({
-                      socketServer: global.spiderman.server.wsDeviceStatus,
-                      message: JSON.stringify(record),
-                    });
+                    console.log('iotrouter workder onData', record);
+                    global.domain.workerMsgSender.send(JSON.stringify(record)); // to Express and MetaProcess
+                    // global.spiderman.socket.broadcastMessage({
+                    //   socketServer: global.spiderman.server.wsDeviceStatus,
+                    //   message: JSON.stringify(record)
+                    // });
                   });
                 }
               },
@@ -279,11 +283,12 @@ module.exports = () => {
               (err, data) => {
                 if (data) {
                   data.forEach((record) => {
-                    console.log("mqtt workder onData", record);
-                    global.spiderman.socket.broadcastMessage({
-                      socketServer: global.spiderman.server.wsDeviceStatus,
-                      message: JSON.stringify(record),
-                    });
+                    console.log('iotrouter workder onData', record);
+                    global.domain.workerMsgSender.send(JSON.stringify(record)); // to Express and MetaProcess
+                    // global.spiderman.socket.broadcastMessage({
+                    //   socketServer: global.spiderman.server.wsDeviceStatus,
+                    //   message: JSON.stringify(record)
+                    // });
                   });
                 }
               },
@@ -298,32 +303,6 @@ module.exports = () => {
       onError: () => {},
     });
   }
-
-  //   function trigger({ action, data }) {
-  //     // global.spiderman.systemlog.writeInfo(`domain worker-iobox trigger ${action} ${data}`);
-
-  //     const { client } = allDevices.find((i) => i.host === action.host);
-
-  //     const command = generateCommand({ no, status: triggerStatus, delay });
-
-  //     send({ client, command });
-  //   }
-
-  //   function generateCommand({ no, status, delay = '' }) {
-  //     status = status ? 1 : 0;
-  //     if (!delay) return `AT+STACH${no}=${status}\n`;
-
-  //     const ret = `AT+STACH${no}=${status},${delay}\n`;
-
-  //     global.spiderman.systemlog.writeInfo(`domain worker-iobox generateCommand ${ret}`);
-
-  //     return ret;
-  //   }
-
-  //   function send({ client, command }) {
-  //     const buffer = Buffer.from(command, 'ascii');
-  //     client.write(buffer);
-  //   }
 
   return {
     init,

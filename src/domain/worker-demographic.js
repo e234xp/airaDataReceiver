@@ -94,8 +94,8 @@ module.exports = () => {
             (err, data) => {
               if (data) {
                 data.forEach((record) => {
-                  console.log("demographic workder onData", record);
-
+                  console.log('demographic workder onData', record);
+                  global.domain.workerMsgSender.send(JSON.stringify(record)); // to Express and MetaProcess
                   // global.spiderman.socket.broadcastMessage({
                   //   socketServer: global.spiderman.server.wsDeviceStatus,
                   //   message: JSON.stringify(record)

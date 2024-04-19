@@ -22,6 +22,7 @@ module.exports = {
 
       workerFriendtrolGateway: require("./worker-friendtrol-gateway")(),
       workerIOTRouter: require("./worker-iotrouter")(),
+      workerIOTRouterTcp: require('./worker-iotrouter-tcp')(),
       // workerNx: require('./worker-nx')(),
 
       // initdb: require('./initdb')(),
