@@ -1,15 +1,15 @@
 module.exports = () => {
   let expressClient = null;
-  let expressHost = "localhost";
-  let expressPort = 1234;
+  let expressHost = process.env.AIRA_CONNECT_HOST;
+  let expressPort = parseInt(process.env.AIRA_CONNECT_PORT);
 
   let metaClient = null;
-  let metaHost = "localhost";
-  let metaPort = 2234;
+  let metaHost = process.env.AIRA_META_PROCESSOR_HOST;
+  let metaPort = parseInt(process.env.AIRA_META_PROCESSOR_PORT);
 
   let eventClient = null;
-  let eventHost = "localhost";
-  let eventPort = 3234;
+  let eventHost = process.env.AIRA_EVENT_DISPATCHER_HOST;
+  let eventPort = parseInt(process.env.AIRA_EVENT_DISPATCHER_PORT);
 
   function init() {
     console.log(`worker-msgsender init start`);

@@ -3,3 +3,4 @@ data
 bin
 bundle.js
 !.giteep
+.env
