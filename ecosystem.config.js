@@ -1,7 +1,7 @@
-const airaDataReceiver = {
-  name: "airaDataReceiver",
+const { version, name } = require("./package.json")
+const app = {
+  name,
   script: "./src/main.js",
-  ignore_watch : ["node_modules", "src/data"],
+  ignore_watch: ["data", "src/data"],
 }
-
-module.exports = { apps: [airaDataReceiver] }
+module.exports = { apps: [app] }
